@@ -75,7 +75,7 @@ const addEmpForm=function(){
     addEmployeform.style.display="block";
     overlay.style.display="block"
     employeeAddForm.reset();
-    avatarImg.src="images/avatar" ; 
+    avatarImg.src="/images/avatar" ; 
     
 }
 addEmpBtn.addEventListener('click',addEmpForm);
@@ -614,11 +614,6 @@ function editValidation(){
 
 //display and hide the edit employee form
 
-const editEmpFormOpen=function(){
-    editEmpForm.style.display="block";
-    overlay.style.display="block";
-}
-editFormBtn.addEventListener('click',editEmpFormOpen);
 
 const closeFromEmpEdit=function(){
     editEmpForm.style.display="none";
@@ -627,6 +622,14 @@ const closeFromEmpEdit=function(){
 editCancel.addEventListener('click',closeFromEmpEdit);
 closeEdit.addEventListener('click',closeFromEmpEdit);
 overlay.addEventListener('click',closeFromEmpEdit);
+
+const editEmpFormOpen=function(){
+    editEmpForm.style.display="block";
+    overlay.style.display="block";
+}
+// editFormBtn.addEventListener('click',editEmpFormOpen);
+
+
 
 
 

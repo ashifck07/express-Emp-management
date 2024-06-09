@@ -23,7 +23,7 @@
                     <li><a href="#"><i class="fa-solid fa-house"></i>Dashboard</a></li>
                     <li><a href="index.ejs"><i class="fa-solid fa-chart-simple"></i>Employees</a></li>
                     <li><a href="#"><i class="fa-solid fa-user"></i>My Profile</a></li>
-                    <li><a href="#"><i class="fa-solid fa-lock"></i>Logout</a></li>
+                    <li><a href="/employees/login"><i class="fa-solid fa-lock"></i>Logout</a></li>
                 </ul>
             </nav>
                <div class="logo d-flex">
@@ -85,7 +85,7 @@
                               </tr>
                             </thead>
                             <tbody id="table_body">
-                              <tr>
+                              <!-- <tr>
                                 <td scope="row">#01</td>
                                 <td><img src="/images/Rectangle 346.png">Mr. Michael Johnson</td>
                                 <td>michaeljohnson@example.com</td>
@@ -103,7 +103,7 @@
                                       <li><a class="dropdown-item" onclick="openDltMsg()" href="#"><i class="fa-solid fa-trash"></i>Delete</a></li>
                                     </ul>
                                   </div></td>
-                              </tr>
+                              </tr> -->
                             </tbody>
                           </table>
                     </div>
@@ -149,7 +149,7 @@
 
 <!-- second secion add employee details form -->
 
-        <form id="employeeAddForm">
+        <form id="employeeAddForm" method="post" action="">
         <div  class=" container-form-add col-12 add-form  bg-white  mt-4 mb-3 p-4 " id="addEmploye">
           <div class="d-flex justify-content-between">
             <span class="h3 fw-bold heading">Add Employee</span>
@@ -292,7 +292,7 @@
                 <div class="bottom-button bg-white  p-4">
                     <div class="button d-flex justify-content-end">
                         <button class="btn unfilled" onclick="" id="cancelBtn">Cancel</button>
-                        <button class=" btn filled_btn" onclick="" id="empAddBtn">Add Employee</button>
+                        <button class=" btn filled_btn" onclick="" id="empAddBtn" type="submit">Add Employee</button>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,7 @@
 const asyncHandler=require("express-async-handler");
  const Employee=require("../models/employeeModel");
+ const fs=require("fs");
+ const path = require("path")
 
 
  const mainHome=async(req,res)=>{
@@ -72,9 +74,8 @@ const getEmployees=asyncHandler(async(req,res)=>{
     res.status(201).json(employee)
  });
 
- // upate  employee
-// @route put/api/contacts/id
-// access public
+ // update  employee
+
 const updateEmployee=asyncHandler(async(req,res)=>{
     const employee=await Employee.findById(req.params.id);
     if(!employee){
@@ -90,6 +91,10 @@ const updateEmployee=asyncHandler(async(req,res)=>{
     res.status(200).json(upadtedEmployee);
 });
 
+
+const test = (req,res) => {
+    res.render("signup");
+}
 
 
 // get one  
@@ -110,13 +115,21 @@ const getEmployee=asyncHandler(async(req,res)=>{
 // access public
 const deleteEmployee=asyncHandler(async(req,res)=>{
     console.log("hi")
-    const employee= await Employee.findById(req.params.id);
+    const employee= await Employee.findByIdAndDelete(req.params.id);
+   
+    console.log("id of employee",employee);
     if(!employee){
+        console.log("id is inside the loop is ",req.params.id);
         res.status(404);
         throw new Error("employee not found");
     }
-    await Employee.deleteOne();
+    // await Employee.deleteOne();
+   
+    
+
     res.status(200).json(employee);
+    console.log("id is outsideside the loop is ",req.params.id);
+
 
 })
 
@@ -146,5 +159,5 @@ module.exports={
     mainHome,
     postavatar,
     viewPage,
-
+    test
 };
