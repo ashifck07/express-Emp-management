@@ -8,7 +8,10 @@
 </head>
 <body>
     <div class="wrapper">
-        <form method="post" action="/employees/login">
+        <form method="post" action="/user/login">
+            <% if (err) { %>
+             <p style="color: red;"><%= err %></p>
+            <% } %>
           <h2>Login</h2>
             <div class="input-field">
             <input type="email" name="email">
@@ -27,9 +30,14 @@
           </div>
           <button type="submit">Log In</button>
           <div class="register">
-            <p>Don't have an account? <a href="signup.html">Register</a></p>
+            <p>Don't have an account? <a href="/signup">Register</a></p>
           </div>
         </form>
       </div>
+      <script>
+        if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+      </script>
 </body>
 </html>

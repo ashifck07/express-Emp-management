@@ -13,18 +13,15 @@ const asyncHandler=require("express-async-handler");
  }
 
 
-// get all 
-// @route get/api/contacts
-// access public
+// get all employee
 const getEmployees=asyncHandler(async(req,res)=>{
     const employees=await Employee.find();
     res.status(200).json(employees)
 });
   
 
-// create  emplyee
-// @route post/api/contacts
-// access public
+// create  emplyeee
+
  const createEmployee=asyncHandler(async(req,res)=>{
     console.log("added Employee",req.body);
     const {   salutation,
@@ -91,15 +88,7 @@ const updateEmployee=asyncHandler(async(req,res)=>{
     res.status(200).json(upadtedEmployee);
 });
 
-
-const test = (req,res) => {
-    res.render("signup");
-}
-
-
-// get one  
-// @route get/api/contacts/id
-// access public
+// get one employee
 
 const getEmployee=asyncHandler(async(req,res)=>{
     const employee=await Employee.findById(req.params.id);
@@ -110,29 +99,20 @@ const getEmployee=asyncHandler(async(req,res)=>{
     res.status(200).json(employee)
 });
 
-// deleted 
-// @route delete/api/contacts/id
-// access public
+// delete emplyeee
+
 const deleteEmployee=asyncHandler(async(req,res)=>{
-    console.log("hi")
     const employee= await Employee.findByIdAndDelete(req.params.id);
    
     console.log("id of employee",employee);
     if(!employee){
-        console.log("id is inside the loop is ",req.params.id);
         res.status(404);
         throw new Error("employee not found");
     }
-    // await Employee.deleteOne();
-   
-    
-
+   const imagePath=path.join(__dirname,"..","assets","empImage", `${req.params.id}.png`);
+   fs.unlinkSync(imagePath);
     res.status(200).json(employee);
-    console.log("id is outsideside the loop is ",req.params.id);
-
-
 })
-
 
 //image post
 
@@ -159,5 +139,5 @@ module.exports={
     mainHome,
     postavatar,
     viewPage,
-    test
+
 };

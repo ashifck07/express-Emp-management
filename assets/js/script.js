@@ -146,6 +146,7 @@ function DOB(date){
  //image input
 const avatarImg=document.getElementById("avatarImg");
 const inputFile=document.getElementById("input_file");
+let checkImage=false;
 
 inputFile.onchange = function(){
     let imageObject=inputFile.files[0];
@@ -187,10 +188,11 @@ inputFile.onchange = function(){
         const avatarId=responseData._id;
         const formData=new FormData();
         formData.append("avatar",inputFile.files[0]);
-        await fetch(`http://localhost:5001/employees/${avatarId}/avatar`,{
-            method:"POST",
-            body:formData,
-        });
+            await fetch(`http://localhost:5001/employees/${avatarId}/avatar`,{
+                method:"POST",
+                body:formData,
+            });
+        
         alldata.unshift(addnewEmp);
         addnewEmp._id=avatarId;
         tableDataShow(0)
@@ -380,9 +382,7 @@ edit_input_file.onchange = function(){
     imageEdit.src =URL.createObjectURL(imageObjectEdit)
 }
 
-
 async function editEmployee(id){
-    console.log("edit id is",id);
     editEmpFormOpen();
     try{
         const res=await fetch(`http://localhost:5001/employees/${id}`,{
@@ -401,7 +401,6 @@ async function editEmployee(id){
         usernameEdit.value=data.userName;
         passwordEdit.value=data.password;
         dobEdit.value=DOB(data.dob);
-        console.log("edit dob",  dobEdit.value);
         genderCheck();
         qualificationEdit.value=data.qualification;
         addressEdit.value=data.address;
@@ -410,9 +409,7 @@ async function editEmployee(id){
         cityEdit.value=data.city;
         pinEdit.value=data.pinZip;
 
-   
-       
-         function genderCheck(){
+            function genderCheck(){
             const maleEdit= document.getElementById("maleEdit");
             const femaleEdit= document.getElementById("femaleEdit");
             gender = data.gender;
