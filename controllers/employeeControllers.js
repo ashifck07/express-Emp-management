@@ -120,10 +120,14 @@ const postavatar=async(req,res)=>{
     console.log("received files",req.file);
     console.log("requested params",req.params);
     if(req.file){
-        const avatarPath=`/empImage/${req.file.file}`;
-        await Employee.findByIdAndUpdate(req.params.id,{avatar :avatarPath});
-        console.log('Image uploaded successfully...............');
-        res.status(200).json({ message: 'Image uploaded successfully...............' });
+        const avatarPath=`${req.file.filename}`;
+        console.log("avather path is :",avatarPath);
+        console.log("filenames are :",req.file.filename);
+        await Employee.findByIdAndUpdate(req.params.id,{avatar :avatarPath})
+
+            console.log('Image uploaded successfully...............');
+            res.status(200).json({ message: 'Image uploaded successfully...............'});
+        
     }else{
         console.log('No file uploaded');
         res.status(400).json({ message: 'Failed to upload image...............' });

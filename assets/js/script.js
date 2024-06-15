@@ -1,3 +1,4 @@
+
 let alldata=[];
 
 async function fetching(){
@@ -51,6 +52,8 @@ function displayEmployee(data,starts){
       table_body.innerHTML=dataInput;
     }
 }
+
+
 function numberCount(count){
     if(count<9){
        return 0
@@ -376,12 +379,13 @@ const closeEdit=document.getElementById("closeEdit");
 //image 
 const imageEdit=document.getElementById("imageEdit");
 const edit_input_file=document.getElementById("edit_input_file");
-
+ let imgCheck=false;
 edit_input_file.onchange = function(){
+    imgCheck=true;
     let imageObjectEdit=edit_input_file.files[0];
     imageEdit.src =URL.createObjectURL(imageObjectEdit)
 }
-
+let updatedData;
 async function editEmployee(id){
     editEmpFormOpen();
     try{
@@ -474,13 +478,20 @@ try{
     const avatarEdit=edit_input_file.files[0];
     const editFormaData=new FormData();
     editFormaData.append("avatar",avatarEdit);
-    await fetch(`http://localhost:5001/employees/${id}/avatar`,{
+   if(imgCheck==true){
+      await fetch(`http://localhost:5001/employees/${id}/avatar`,{
         method:"POST",
         body:editFormaData,
     });
-    alldata.push(editData);
-    editData.id=id;
-    tableDataShow(alldata,0);
+    
+   }
+    // alldata.filter((element,index)=>{
+    //     if(element._id==id){ 
+    //         alldata.splice(index,1,editData)
+    //         tableDataShow(0);
+    //     }
+    // })
+  
     const result= await Swal.fire({
         icon: "success",
             title: "Employee Edited Successfully!",
@@ -643,18 +654,26 @@ function deleteEmployee(id){
         if(!res.ok){
             throw new Error(`delete cant done,${res.status}`);
         }
-       
- const result= await Swal.fire({
-    title: 'Delete!',
-    text: 'Do you want to continue',
-    icon: 'error',
-    confirmButtonText: 'Ok'
-  })
-  if(result.isConfirmed)
-{
-Swal.close();
-}
-location.reload();
+    alldata.filter((element,index )=> {
+
+        if(id===element._id)
+        {
+        alldata.splice(index,1)
+        tableDataShow(0);
+        }
+
+     });
+    const result= await Swal.fire({
+        title: 'Delete!',
+        text: 'Do you want to continue',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      })
+      if(result.isConfirmed)
+    {
+    Swal.close();
+    }
+    closeDltMsg();
       }
       catch(error){
         console.log(error);
@@ -727,7 +746,8 @@ function tableDataShow(nextList){
 // final page
 
 function finalpage(){
-    let finalBtn=buttonNumber-1;
+    currentPage =buttonNumber-1;
+
     tableDataShow(finalBtn);
 }
 

@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const{ userSignup,userLogin }=require("../controllers/userController")
+const{ userSignup,userLogin,otpVerification }=require("../controllers/userController")
 
 
 
@@ -18,8 +18,8 @@ app.get("/login",(req,res)=>{
     res.render("login",{err:null});
 })
 
-app.post("/login",userLogin)
-
+app.post("/login",userLogin);
+app.post("/otp",otpVerification);
 
 module.exports = app;
 

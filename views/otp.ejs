@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="wrapper">
+        <form method="post" action="/user/otp">
+            <% if (err) { %>
+             <p style="color: red;"><%= err %></p>
+            <% } %>
+          <h2>OTP</h2>
+            <div class="input-field">
+            <input type="text" name="currentOtp">
+            <label>Enter OTP</label>
+          </div>
+         
+          
+          <button type="submit">Sign Up</button>
+        </form>
+      </div>
+      <script>
+        if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+      </script>
+</body>
+</html>
