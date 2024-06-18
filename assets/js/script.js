@@ -1,36 +1,59 @@
 
 let alldata=[];
+let currentPage=1;
+let dataCount;
+console.log("dsbjhfd",dataCount);
+ let pageList =document.getElementById("pageList");
+let limits=parseInt(document.getElementById("pageList").value);
+console.log("out  limit",limits);
+pageList.addEventListener("change",()=>{
+    limits=parseInt(document.getElementById("pageList").value);
+    console.log("inside",limits);
+    fetching(limits,currentPage);
+    listTable(limits,dataCount);
+});
 
-async function fetching(){
+let searchInput="";
+function search(){
+     searchInput=document.getElementById("searchBar").value;
+    console.log(searchInput);
+    fetching(limits,currentPage)
+}
+
+
+
+
+
+async function fetching(limits,currentPage){
 try{
-        const res=await fetch(`http://localhost:5001/employees`)
+        const res=await fetch(`http://localhost:5001/employees?page=${currentPage}&limit=${limits}&search=${searchInput}`)
         const data= await res.json();
-        console.log("new",data);
         if(!res.ok){
             throw new Error(`error in fetch ${res.status}`) 
         }
-        alldata=data;
-        console.log(data);
-        alldata.reverse();
-        displayEmployee(alldata,0);
-        listTable(); 
+        alldata=data.data;
+        dataCount=data.count;
+        console.log(data.count);
+        // alldata.reverse();
+        displayEmployee(alldata,currentPage,limits);
+        listTable(limits,dataCount); 
      }
 catch(Error){
     console.log(Error);
     }
 }
-fetching();
+fetching(limits,currentPage);
 
 
-function displayEmployee(data,starts){
+function displayEmployee(data,starts,limit){
     const table_body=document.getElementById("table_body");
-
+    const serialNumber = (starts-1)*limit
   
     let dataInput="";
 
     for(let i=0;i<data.length;i++){
         dataInput+=`<tr>
-        <td scope="row">#${numberCount(starts)}${starts+1}</td>
+        <td scope="row">#${numberCount(serialNumber)}${serialNumber+i+1}</td>
         <td><img src="http://localhost:5001/empImage/${data[i]._id}.png" height="30px" width="35px" style="border-radius: 50%">${data[i].salutation}.${data[i].firstName} ${data[i].lastName}</td>
         <td>${data[i].email}</td>
         <td>${data[i].phone}</td>
@@ -706,54 +729,62 @@ overlay.addEventListener('click',closeDltMsg)
 
 
 
-const pageList=document.getElementById("pageList");
+// const pageList=document.getElementById("pageList");
 const pageNumberBtn=document.getElementById("pageNumber");
 
 let buttonNumber;
- function listTable(){
-    let pageNumberList=Number(pageList.value);
+ function listTable(limits,dataCount){
+    let pageNumberList=limits;
 
-    buttonNumber=Math.ceil(alldata.length/pageNumberList);
+    buttonNumber=Math.ceil(dataCount/pageNumberList);
+    console.log("data count is ",dataCount);
     // console.log("number",buttonNumber);
     let numberofpage=""
-    for(let i=0;i<buttonNumber;i++){
-        numberofpage+=`<li class="page-item" id="pageNumber"><a class="page-link d-flex gap-2" href="#" onclick="tableDataShow(${i})">${i+1}</a></li>`
+    for(let i=1;i<=buttonNumber;i++){
+        numberofpage+=`<li class="page-item" id="pageNumber"><a class="page-link d-flex gap-2" href="#" onclick="tableDataShow(${i})">${i}</a></li>`
     }
     pageNumberBtn.innerHTML=numberofpage;
-    let startnumber=0  
-    tableDataShow(startnumber);
+   
+    // tableDataShow(startnumber);
 }
- let currentPage;
+
 function tableDataShow(nextList){
-    // console.log(nextList);
     currentPage=nextList;
-    // console.log("curennt page number",currentPage);
-
-    let listNumber=Number(pageList.value);
-    let tabledata=[];
-    let pageStart=nextList*listNumber;
-    for(let i=pageStart;i<(listNumber+pageStart)&&i<(alldata.length);i++){
-        // if(alldata[i]==null){
-        //     break;
-        // }else{
-        //     tabledata.push(alldata[i])
-        // }
-        tabledata.push(alldata[i])
-
-    }
-    displayEmployee(tabledata,pageStart)
+    console.log(currentPage);
+    fetching(limits,currentPage);
 }
-// final page
+
+// function tableDataShow(nextList){
+//     // console.log(nextList);
+//     currentPage=nextList;
+//     // console.log(currentPage);
+//     // console.log("curennt page number",currentPage);
+
+//     let listNumber=Number(pageList.value);
+//     let tabledata=[];
+//     let pageStart=nextList*listNumber;
+//     for(let i=pageStart;i<(listNumber+pageStart)&&i<(alldata.length);i++){
+//         // if(alldata[i]==null){
+//         //     break;
+//         // }else{
+//         //     tabledata.push(alldata[i])
+//         // }
+//         tabledata.push(alldata[i])
+
+//     }
+//     displayEmployee(tabledata,pageStart)
+// }
+// // final page
 
 function finalpage(){
-    currentPage =buttonNumber-1;
+    currentPage =buttonNumber;
 
-    tableDataShow(finalBtn);
+    tableDataShow(currentPage);
 }
 
-//next
+// //next
 function next(){
-    if(currentPage<buttonNumber-1){
+    if(currentPage<buttonNumber){
         currentPage++;
         tableDataShow(currentPage)
     }else{
@@ -761,65 +792,69 @@ function next(){
         
     }
 }
-//  previous page
+// //  previous page
 function previous(){
     if(currentPage>0){
+        console.log(currentPage);
         currentPage--;
-        tableDataShow(currentPage)
-    }else{
-       tableDataShow(currentPage)
+        tableDataShow(currentPage);
+        console.log("inside if condition is true");
+    }
+    else{
+       tableDataShow(currentPage);
+       console.log("else condition in false");
     }
 }
 
 //search section
-const searchBar=document.getElementById("searchBar");
-const table_body=document.getElementById("table_body");
+// const searchBar=document.getElementById("searchBar");
+// const table_body=document.getElementById("table_body");
 
-let searchArray=[];
+// let searchArray=[];
 
-const searchEmployee=()=>{
+// const searchEmployee=()=>{
 
    
-    const paginationtest=document.getElementById("testpage");
-    const empListSec=document.getElementById("pageList");
-    const numberOf=document.getElementById("count");
+//     const paginationtest=document.getElementById("testpage");
+//     const empListSec=document.getElementById("pageList");
+//     const numberOf=document.getElementById("count");
    
 
-    var filter=searchBar.value.toLowerCase();
-    if(filter!==""){
-        searchArray=[];
-        for(let i=0; i<alldata.length;i++){
-            let fName=alldata[i].firstName.toLowerCase();
-            let lName=alldata[i].lastName.toLowerCase();
-            let email=alldata[i].email.toLowerCase();
-            let phone=alldata[i].phone.toString();
+//     var filter=searchBar.value.toLowerCase();
+//     if(filter!==""){
+//         searchArray=[];
+//         for(let i=0; i<alldata.length;i++){
+//             let fName=alldata[i].firstName.toLowerCase();
+//             let lName=alldata[i].lastName.toLowerCase();
+//             let email=alldata[i].email.toLowerCase();
+//             let phone=alldata[i].phone.toString();
 
-            if(fName.includes(filter)||lName.includes(filter)||email.includes(filter)||phone.includes(filter)){
-                searchArray.push(alldata[i]);
-                paginationtest.style.display="none";
-                empListSec.style.display="none"
-                numberOf.style.display="none"               
-            }
-            else{
-                table_body.innerHTML="";
-            }
+//             if(fName.includes(filter)||lName.includes(filter)||email.includes(filter)||phone.includes(filter)){
+//                 searchArray.push(alldata[i]);
+//                 paginationtest.style.display="none";
+//                 empListSec.style.display="none"
+//                 numberOf.style.display="none"               
+//             }
+//             else{
+//                 table_body.innerHTML="";
+//             }
           
 
-        }
-        // console.log("array in sear",searchArray);
-        displayEmployee(searchArray,0)
+//         }
+//         // console.log("array in sear",searchArray);
+//         displayEmployee(searchArray,0)
         
-    }
-    else{
-        paginationtest.style.display="block";
-        empListSec.style.display="block"
-        numberOf.style.display="block"
-        tableDataShow(0)
+//     }
+//     else{
+//         paginationtest.style.display="block";
+//         empListSec.style.display="block"
+//         numberOf.style.display="block"
+//         tableDataShow(0)
       
 
-    }
+//     }
 
-}
+// }
 
 
 

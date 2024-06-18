@@ -1,22 +1,52 @@
-const asyncHandler=require("express-async-handler");
- const Employee=require("../models/employeeModel");
- const fs=require("fs");
- const path = require("path")
+const asyncHandler = require("express-async-handler");
+ const Employee = require("../models/employeeModel");
+ const fs = require("fs");
+ const path = require("path");
+const employeeServices = require("../services/employeeServices");
+const { count } = require("console");
 
 
- const mainHome=async(req,res)=>{
+ const mainHome = async(req,res)=>{
     res.render("index")
  }
 
- const viewPage=async(req,res)=>{
+ const viewPage = async(req,res)=>{
     res.render("view")
  }
 
 
 // get all employee
-const getEmployees=asyncHandler(async(req,res)=>{
-    const employees=await Employee.find();
-    res.status(200).json(employees)
+const getEmployees = asyncHandler(async(req,res)=>{
+   try {
+    const page= parseInt(req.query.page) ||1;
+    console.log("page is:",page);
+    const limit= parseInt(req.query.limit);
+    console.log("limit is:",limit);
+    const search= req.query.search ||'';
+    console.log("serach :",search);
+    const result= await employeeServices.getEmployees(page,limit,search);
+ 
+
+
+
+    // const employees= await Employee.find();
+     return res.status(200).json(
+        {
+            data:result.data,
+            search:result.search,
+            page:result.page,
+            // metadata:result.metadata
+            count:result.count
+        }
+    );
+
+    
+   } catch (error) {
+    return res.status(400).json({
+        success: false,
+        msg: error.message
+      });
+   }
 });
   
 
