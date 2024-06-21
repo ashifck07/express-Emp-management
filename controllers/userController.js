@@ -14,10 +14,7 @@ const userSignup=async (req,res)=>{
       username : username,
       email : email,
       password :  bcrypt.hashSync(password,10)
-    };
-    let user = {name:username}
-    const token = jwt.sign(user,process.env.SECRET_KEY)
-    console.log(token);
+    }; 
     otp = Math.floor(Math.random() * 9000) + 1000;
    
         const transporter = nodemailer.createTransport({
@@ -30,8 +27,6 @@ const userSignup=async (req,res)=>{
           },
         });
         
-        // async..await is not allowed in global scope, must use a wrapper
-          // send mail with defined transport object
           const info = await transporter.sendMail({
             from: process.env.MAIL_ID, // sender address
             to: `${email},ashifck06@gmail.com`, // list of receivers
@@ -39,7 +34,6 @@ const userSignup=async (req,res)=>{
             text: "OTP", // plain text body
             html: `<b>OTP is ${otp}</b>`, // html body
           });
-            // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
           res.render("otp",{err:null});
           console.log(otp);
           
@@ -48,30 +42,33 @@ const userSignup=async (req,res)=>{
  const userLogin=async(req,res)=>{
     let {email,password} = req.body;
 
-    const response = await users.findOne({Email:email})
-    // console.log(response);
+    const response = await users.findOne({Email:email});
     
     if(response){
-        let passwordCheck= await bcrypt.compare(password,response.Password)
-       passwordCheck ? res.redirect("/employees/dashboard") : ""
-       if(response.Email!=email){
-        let err = "invalid email";
-         res.render("login",{err:err});
-    }
-    else if(!bcrypt.compareSync(password,response.Password)){
+     if(!bcrypt.compareSync(password,response.Password)){
         let err = "invalid password";
          res.render("login",{err:err});
-    }
+    
     }else{
-        let err = "invalid credential";
-        res.render("login",{err:err});
+      let user = {email:email}
+    const token = jwt.sign(user,process.env.SECRET_KEY,{expiresIn:"15m"})
+    // console.log(token);
+    res.cookie("jwt",token).redirect("/employees/dashboard");
+    console.log("its here");
     }
+  }else{
 
-}
+    let err = "invalid credential";
+    res.render("login",{err:err});
+  }  
+  
+ }
+
+
 const otpVerification = async (req,res) => {
   const {currentOtp} = req.body;
-  console.log(currentOtp+'    '+otp);
-  console.log(currentUser);
+  // console.log(currentOtp+'    '+otp);
+  // console.log(currentUser);
   if(currentOtp == otp){
     let userModel = users({
       userName:currentUser.username,
@@ -80,7 +77,7 @@ const otpVerification = async (req,res) => {
   });
   
   userModel.save().then((response)=>{
-    console.log(response);
+    // console.log(response);
     res.redirect("/user/login");
   
   })

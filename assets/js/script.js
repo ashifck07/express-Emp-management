@@ -2,13 +2,10 @@
 let alldata=[];
 let currentPage=1;
 let dataCount;
-console.log("dsbjhfd",dataCount);
  let pageList =document.getElementById("pageList");
 let limits=parseInt(document.getElementById("pageList").value);
-console.log("out  limit",limits);
 pageList.addEventListener("change",()=>{
     limits=parseInt(document.getElementById("pageList").value);
-    console.log("inside",limits);
     fetching(limits,currentPage);
     listTable(limits,dataCount);
 });
@@ -16,7 +13,6 @@ pageList.addEventListener("change",()=>{
 let searchInput="";
 function search(){
      searchInput=document.getElementById("searchBar").value;
-    console.log(searchInput);
     fetching(limits,currentPage)
 }
 
@@ -26,16 +22,21 @@ function search(){
 
 async function fetching(limits,currentPage){
 try{
-        const res=await fetch(`http://localhost:5001/employees?page=${currentPage}&limit=${limits}&search=${searchInput}`)
-        const data= await res.json();
+        const res = await fetch(`http://localhost:5001/employees?page=${currentPage}&limit=${limits}&search=${searchInput}`)
+        const data = await res.json();
         if(!res.ok){
             throw new Error(`error in fetch ${res.status}`) 
         }
         alldata=data.data;
         dataCount=data.count;
-        console.log(data.count);
         // alldata.reverse();
-        displayEmployee(alldata,currentPage,limits);
+        if(dataCount==0){
+           const table_body= document.getElementById("table_body");
+        table_body.innerHTML="<h5>employee not found</h5>";
+        }else{
+            displayEmployee(alldata,currentPage,limits);
+        }
+        // displayEmployee(alldata,currentPage,limits);
         listTable(limits,dataCount); 
      }
 catch(Error){
@@ -47,13 +48,13 @@ fetching(limits,currentPage);
 
 function displayEmployee(data,starts,limit){
     const table_body=document.getElementById("table_body");
-    const serialNumber = (starts-1)*limit
-  
+    const startIndex = (starts-1)*limit;
     let dataInput="";
 
     for(let i=0;i<data.length;i++){
+        const serialNumber = startIndex+i+1
         dataInput+=`<tr>
-        <td scope="row">#${numberCount(serialNumber)}${serialNumber+i+1}</td>
+        <td scope="row">#${numberCount(serialNumber)}${serialNumber}</td>
         <td><img src="http://localhost:5001/empImage/${data[i]._id}.png" height="30px" width="35px" style="border-radius: 50%">${data[i].salutation}.${data[i].firstName} ${data[i].lastName}</td>
         <td>${data[i].email}</td>
         <td>${data[i].phone}</td>
@@ -221,7 +222,7 @@ inputFile.onchange = function(){
         
         alldata.unshift(addnewEmp);
         addnewEmp._id=avatarId;
-        tableDataShow(0)
+        tableDataShow(1)
         addEmpCloseForm();
         Swal.fire({
             icon: "success",
@@ -508,12 +509,6 @@ try{
     });
     
    }
-    // alldata.filter((element,index)=>{
-    //     if(element._id==id){ 
-    //         alldata.splice(index,1,editData)
-    //         tableDataShow(0);
-    //     }
-    // })
   
     const result= await Swal.fire({
         icon: "success",
@@ -658,7 +653,6 @@ const editEmpFormOpen=function(){
     editEmpForm.style.display="block";
     overlay.style.display="block";
 }
-// editFormBtn.addEventListener('click',editEmpFormOpen);
 
 
 
@@ -729,7 +723,6 @@ overlay.addEventListener('click',closeDltMsg)
 
 
 
-// const pageList=document.getElementById("pageList");
 const pageNumberBtn=document.getElementById("pageNumber");
 
 let buttonNumber;
@@ -737,7 +730,6 @@ let buttonNumber;
     let pageNumberList=limits;
 
     buttonNumber=Math.ceil(dataCount/pageNumberList);
-    console.log("data count is ",dataCount);
     // console.log("number",buttonNumber);
     let numberofpage=""
     for(let i=1;i<=buttonNumber;i++){
@@ -745,35 +737,13 @@ let buttonNumber;
     }
     pageNumberBtn.innerHTML=numberofpage;
    
-    // tableDataShow(startnumber);
 }
 
 function tableDataShow(nextList){
     currentPage=nextList;
-    console.log(currentPage);
     fetching(limits,currentPage);
 }
 
-// function tableDataShow(nextList){
-//     // console.log(nextList);
-//     currentPage=nextList;
-//     // console.log(currentPage);
-//     // console.log("curennt page number",currentPage);
-
-//     let listNumber=Number(pageList.value);
-//     let tabledata=[];
-//     let pageStart=nextList*listNumber;
-//     for(let i=pageStart;i<(listNumber+pageStart)&&i<(alldata.length);i++){
-//         // if(alldata[i]==null){
-//         //     break;
-//         // }else{
-//         //     tabledata.push(alldata[i])
-//         // }
-//         tabledata.push(alldata[i])
-
-//     }
-//     displayEmployee(tabledata,pageStart)
-// }
 // // final page
 
 function finalpage(){
@@ -794,68 +764,11 @@ function next(){
 }
 // //  previous page
 function previous(){
-    if(currentPage>0){
-        console.log(currentPage);
+    if(currentPage>1){
         currentPage--;
         tableDataShow(currentPage);
-        console.log("inside if condition is true");
     }
     else{
        tableDataShow(currentPage);
-       console.log("else condition in false");
     }
 }
-
-//search section
-// const searchBar=document.getElementById("searchBar");
-// const table_body=document.getElementById("table_body");
-
-// let searchArray=[];
-
-// const searchEmployee=()=>{
-
-   
-//     const paginationtest=document.getElementById("testpage");
-//     const empListSec=document.getElementById("pageList");
-//     const numberOf=document.getElementById("count");
-   
-
-//     var filter=searchBar.value.toLowerCase();
-//     if(filter!==""){
-//         searchArray=[];
-//         for(let i=0; i<alldata.length;i++){
-//             let fName=alldata[i].firstName.toLowerCase();
-//             let lName=alldata[i].lastName.toLowerCase();
-//             let email=alldata[i].email.toLowerCase();
-//             let phone=alldata[i].phone.toString();
-
-//             if(fName.includes(filter)||lName.includes(filter)||email.includes(filter)||phone.includes(filter)){
-//                 searchArray.push(alldata[i]);
-//                 paginationtest.style.display="none";
-//                 empListSec.style.display="none"
-//                 numberOf.style.display="none"               
-//             }
-//             else{
-//                 table_body.innerHTML="";
-//             }
-          
-
-//         }
-//         // console.log("array in sear",searchArray);
-//         displayEmployee(searchArray,0)
-        
-//     }
-//     else{
-//         paginationtest.style.display="block";
-//         empListSec.style.display="block"
-//         numberOf.style.display="block"
-//         tableDataShow(0)
-      
-
-//     }
-
-// }
-
-
-
-

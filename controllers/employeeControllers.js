@@ -3,7 +3,6 @@ const asyncHandler = require("express-async-handler");
  const fs = require("fs");
  const path = require("path");
 const employeeServices = require("../services/employeeServices");
-const { count } = require("console");
 
 
  const mainHome = async(req,res)=>{
@@ -18,25 +17,22 @@ const { count } = require("console");
 // get all employee
 const getEmployees = asyncHandler(async(req,res)=>{
    try {
-    const page= parseInt(req.query.page) ||1;
-    console.log("page is:",page);
-    const limit= parseInt(req.query.limit);
-    console.log("limit is:",limit);
-    const search= req.query.search ||'';
-    console.log("serach :",search);
-    const result= await employeeServices.getEmployees(page,limit,search);
+    const page = parseInt(req.query.page) ||1;
+    const limit = parseInt(req.query.limit) ||5;
+    const search = req.query.search ||'';
+    const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
+    const result = await employeeServices.getEmployees(page,limit,search,sortOrder);
  
 
 
 
-    // const employees= await Employee.find();
      return res.status(200).json(
         {
             data:result.data,
             search:result.search,
             page:result.page,
-            // metadata:result.metadata
-            count:result.count
+            count:result.count,
+            revdata: result.revdata // Pass sortOrder to the frontend
         }
     );
 
@@ -52,9 +48,8 @@ const getEmployees = asyncHandler(async(req,res)=>{
 
 // create  emplyeee
 
- const createEmployee=asyncHandler(async(req,res)=>{
-    console.log("added Employee",req.body);
-    const {   salutation,
+ const createEmployee = asyncHandler(async(req,res)=>{
+    const newEmp = {   salutation,
         firstName,
         lastName,
         email,
@@ -69,41 +64,19 @@ const getEmployees = asyncHandler(async(req,res)=>{
         state,
         city,
         pinZip,
-    }=req.body;
-    if(!salutation||!firstName||!lastName||
-        !email||!phone||!userName||!password||
-        !dob||!gender||!qualification||!address||
-        !country||!state||!city||!pinZip
-        
-    )
+    } = req.body;
+    if(!newEmp)
         {
         res.status(400);
         throw new Error("all fields are mandatory !");
     }
-    const employee= await Employee.create({
-        salutation,
-        firstName,
-        lastName,
-        email,
-        phone,
-        userName,
-        password,
-        dob,
-        gender,
-        qualification,
-        address,
-        country,
-        state,
-        city,
-        pinZip,
-        
-    })
+    const employee = await Employee.create(newEmp)
     res.status(201).json(employee)
  });
 
  // update  employee
 
-const updateEmployee=asyncHandler(async(req,res)=>{
+const updateEmployee = asyncHandler(async(req,res)=>{
     const employee=await Employee.findById(req.params.id);
     if(!employee){
         res.status(404);
@@ -120,7 +93,7 @@ const updateEmployee=asyncHandler(async(req,res)=>{
 
 // get one employee
 
-const getEmployee=asyncHandler(async(req,res)=>{
+const getEmployee = asyncHandler(async(req,res)=>{
     const employee=await Employee.findById(req.params.id);
     if(!employee){
         res.status(404);
@@ -131,22 +104,23 @@ const getEmployee=asyncHandler(async(req,res)=>{
 
 // delete emplyeee
 
-const deleteEmployee=asyncHandler(async(req,res)=>{
-    const employee= await Employee.findByIdAndDelete(req.params.id);
+const deleteEmployee = asyncHandler(async(req,res)=>{
+    const employee = await Employee.findByIdAndDelete(req.params.id);
    
-    console.log("id of employee",employee);
     if(!employee){
         res.status(404);
         throw new Error("employee not found");
     }
-   const imagePath=path.join(__dirname,"..","assets","empImage", `${req.params.id}.png`);
+   const imagePath = path.join(__dirname,"..","assets","empImage", `${req.params.id}.png`);
    fs.unlinkSync(imagePath);
     res.status(200).json(employee);
 })
 
 //image post
 
-const postavatar=async(req,res)=>{
+    
+    
+    const postavatar = async(req,res)=>{
     console.log("received files",req.file);
     console.log("requested params",req.params);
     if(req.file){
@@ -163,7 +137,9 @@ const postavatar=async(req,res)=>{
         res.status(400).json({ message: 'Failed to upload image...............' });
     }
 }
- 
+
+
+
 module.exports={
     getEmployees,
     deleteEmployee,

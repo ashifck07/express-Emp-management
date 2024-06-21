@@ -1,7 +1,7 @@
 const { Timestamp } = require("mongodb");
 const mongoose=require("mongoose");
 
-const employeeSchema=mongoose.Schema({
+const employeeSchema = mongoose.Schema({
     salutation:{
         type:String,
         required:[true,"salutation required"]
@@ -63,7 +63,8 @@ const employeeSchema=mongoose.Schema({
         required:[true,"please add the pinZip"]
     },
     avatar:{
-        type:String
+        type:String,
+        default:"default-avatar.png",
     },
     
 
