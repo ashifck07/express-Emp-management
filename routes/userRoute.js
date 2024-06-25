@@ -1,10 +1,6 @@
 const express = require("express");
 const app = express();
-const{ userSignup,userLogin,otpVerification }=require("../controllers/userController")
-
-
-
-
+const{ userSignup,userLogin,otpVerification,userLogout }=require("../controllers/userController")
 
 
 
@@ -19,7 +15,9 @@ app.get("/login",(req,res)=>{
 })
 
 app.post("/login",userLogin);
+app.get("/logout",userLogout);
 app.post("/otp",otpVerification);
+
 
 module.exports = app;
 

@@ -1,0 +1,150 @@
+<form id="employeeAddForm" method="post" action="">
+    <div  class=" container-form-add col-12 add-form  bg-white  mt-4 mb-3 p-4 " id="addEmploye">
+      <div class="d-flex justify-content-between">
+        <span class="h3 fw-bold heading">Add Employee</span>
+        <button class="header_button"><i class="fa-solid fa-xmark" onclick="" id="closeBtn"></i></button>
+      </div>
+      <div class="col-12 upload-content my-3" id="uploadImage">
+          <input type="file" accept="image/JPG, image/PNG image/jpeg" id="input_file" name="avatar">
+         <label  class=" d-flex flex-column text-center   rounded py-3 gap-1" for="input_file">
+          <i class="fa-solid fa-upload fs-4"></i>
+          <span class="image fs-6 fw-bold">Upload Image</span>
+          <img src="/images/demo.png" alt="" id="avatarImg">
+          <span class="text-secondary file-type">PNG, JPG files are allowed</span>
+        </label>
+      </div>
+      <div class="left-form-sec d-flex flex-column gap-3">
+          <div class="row">
+              <div class="col-3 d-flex flex-column">
+                  <label for="salutation" class="form-label">Salutation</label>
+                  <select class="form-select form-border" aria-label="Default select example" id="salutation">
+                      <option selected value="">select </option>
+                      
+                      <option value="Mr">Mr</option>
+                      <option value="Mrs">Mrs</option>
+                      <option value="Ms">Ms</option>
+                        
+                    </select>
+                    <div class="error" id="salutationError"></div>
+              </div>
+              <div class="col-4 d-flex flex-column ">
+                  <label for="firstName" class="form-label">First Name</label>
+                  <input class="form-control form-border" type="text" placeholder="First Name" aria-label="default input example" id="firstName" name="inputField">
+                  <div class="error" id="firstNameError" name="inputField"></div>
+              </div>
+              <div class="col-5 d-flex flex-column">
+                  <label for="lastName" class="form-label">Last Name</label>
+                  <input class="form-control form-border" type="text" placeholder="Last Name" aria-label="default input example" id="lastName">
+                  <div class="error" id="lastNameError"></div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-6">
+                  <label for="emailAddress" class="form-label">Email Address</label>
+                 <input type="email" class="form-control form-border" id="emailAddress" placeholder="name@example.com">
+                 <div class="error" id="emailError"></div>
+              </div>
+              <div class="col-6">
+                  <label for="mobileNumber" class="form-label">Mobile Number </label>
+                  <input class="form-control form-border" type="number" placeholder="enter mobile number" aria-label="default input example" id="mobileNumber">
+                  <div class="error" id="mobileError"></div>
+              </div> 
+          </div>
+          <div class="row">
+            <div class="col-6">
+                <label for="username" class="form-label">Username</label>
+               <input type="text" class="form-control form-border" id="username" placeholder="enter username">
+               <div class="error" id="userNameError"></div>
+            </div>
+            <div class="col-6">
+                <label for="password" class="form-label">Password</label>
+                <input class="form-control form-border" type="password" placeholder="enter password" aria-label="default input example" id="password">
+                <div class="error" id="passwordError"></div>
+            </div> 
+        </div>
+          <div class="row">
+              <div class="col-6 d-flex flex-column">
+                  <label for="dateofBirth" class="form-label">Date of Birth  </label>
+                  <input class="form-control form-border" type="date"  id="dateofBirth">
+                  <div class="error" id="dobError"></div>
+              </div>
+              <div class="col-6 ">
+                  <label for="exampleFormControlInput1" class="form-label">Gender </label>
+                      <div class="d-flex">
+                          <div class="form-check">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="male" value="Male">
+                              <label class="form-check-label" for="male">
+                                Male
+                              </label>
+                          </div>
+                          <div class="form-check mx-3">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="female" value="Female">
+                              <label class="form-check-label" for="female">
+                               Female
+                              </label>
+                          </div>
+                          
+                      </div>
+                      <div class="error" id="genderError"></div>
+              </div> 
+              </div>
+              <div class="row">
+                  <div class="col-12">
+                      <label for="qualifications" class="form-label">Qualifications </label>
+                      <input class="form-control form-border" type="text" placeholder="enter address" aria-label="default input example" id="qualifications">
+                      <div class="error" id="qualificationError"></div>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                    <label for="address" class="form-label">Address  </label>
+                    <input class="form-control form-border" type="text" placeholder="enter address" aria-label="default input example" id="address">
+                    <div class="error" id="addressError"></div>
+                </div>
+            </div>
+              <div class="row">
+                  <div class="col-6">
+                      <label for="country" class="form-label">Country </label>
+                      <select class="form-select form-border" aria-label="Default select example" id="country">
+                          <option selected value="">select </option>
+                          <option value="India">India</option>
+                          <option value="pakistan">pakistan</option>
+                          <option value="UAE">UAE</option>
+                        </select>
+                        <div class="error" id="countryError"></div>
+                  </div>
+                  <div class="col-6">
+                      <label for="state" class="form-label">State 
+                           </label>
+                      <select class="form-select form-border" aria-label="Default select example" id="state">
+                          <option selected value="">select </option>
+                          <option value="kerala">kerala</option>
+                          <option value="goa">goa</option>
+                          <option value="karnataka">karnataka</option>
+                        </select>
+                        <div class="error" id="countryError"></div>
+                  </div>
+              </div>
+          <div class="row">
+              <div class="col-6">
+                  <label for="city" class="form-label">City  </label>
+                  <input class="form-control form-border" type="text" placeholder="enter City" aria-label="default input example" id="city">
+                  <div class="error" id="cityError"></div>
+              </div>
+              <div class="col-6">
+                  <label for="pinZip" class="form-label">Pin/Zip</label>
+                  <input class="form-control form-border" type="number" placeholder="enter Pin/Zip " aria-label="default input example" id="pinZip">
+                  <div class="error" id="pinzipError"></div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="bottom-button bg-white  p-4">
+                <div class="button d-flex justify-content-end">
+                    <button class="btn unfilled" onclick="" id="cancelBtn">Cancel</button>
+                    <button class=" btn filled_btn" onclick="" id="empAddBtn" type="submit">Add Employee</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+   </form>

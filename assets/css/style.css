@@ -417,3 +417,10 @@ input.form-control,select.form-select,.range,.color-bar{
 #edit_input_file{
     display: none;
 }
+
+
+/* active color */
+.activeButton{
+    background-color: #4318FF !important;
+    color: white !important;
+}

@@ -1,6 +1,6 @@
  
+ const Employee = require("../models/employeeModel"); 
 
- const employeemodel = require("../models/employeeModel");
 
  const getEmployees = async(page,limit,search,sortOrder)=>{
     const matchStage = {
@@ -26,7 +26,7 @@
             }
         }
     ];
-    const result = await employeemodel.aggregate(aggregationPipeline);
+    const result = await Employee.aggregate(aggregationPipeline);
     // console.log("result",result);
     const metadata = result[0].metadata;
     const data = result[0].data;
@@ -39,13 +39,71 @@
         page,
         metadata,
         count,
-        revdata: sortOrder // Include sortOrder in the response
+        revdata: sortOrder 
     }
     
  }
 
 
 
+
+
+
+
+
+// Function to create a new employee
+const createEmployee = async (newEmp) => {
+    try {
+        const employee = await Employee.create(newEmp);
+        return employee;
+    } catch (error) {
+        throw new Error(`Error in createEmployee service: ${error.message}`);
+    }
+};
+
+// Function to update an employee by ID
+const updateEmployee = async (id, updatedData) => {
+    try {
+        const updatedEmployee = await Employee.findByIdAndUpdate(id, updatedData, { new: true });
+        if (!updatedEmployee) {
+            throw new Error('Employee not found');
+        }
+        return updatedEmployee;
+    } catch (error) {
+        throw new Error(`Error in updateEmployee service: ${error.message}`);
+    }
+};
+
+// Function to get an employee by ID
+const getEmployeeById = async (id) => {
+    try {
+        const employee = await Employee.findById(id);
+        if (!employee) {
+            throw new Error('Employee not found');
+        }
+        return employee;
+    } catch (error) {
+        throw new Error(`Error in getEmployeeById service: ${error.message}`);
+    }
+};
+
+// Function to delete an employee by ID
+const deleteEmployeeById = async (id) => {
+    try {
+        const employee = await Employee.findByIdAndDelete(id);
+        if (!employee) {
+            throw new Error('Employee not found');
+        }
+         return employee;
+    } catch (error) {
+        throw new Error(`Error in deleteEmployeeById service: ${error.message}`);
+    }
+};
+
 module.exports = {
-    getEmployees
-}
+    getEmployees,
+    createEmployee,
+    updateEmployee,
+    getEmployeeById,
+    deleteEmployeeById,
+};

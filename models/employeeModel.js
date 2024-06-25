@@ -64,7 +64,6 @@ const employeeSchema = mongoose.Schema({
     },
     avatar:{
         type:String,
-        default:"default-avatar.png",
     },
     
 

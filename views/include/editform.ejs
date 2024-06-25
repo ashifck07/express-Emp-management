@@ -1,0 +1,147 @@
+<form class="col-12 add-form edit-form  bg-white rounded mt-4 mb-3 p-4" id="editPopup">
+    <div class="d-flex justify-content-between">
+      <span class="h3 fw-bold heading">Edit Employee</span>
+      <button class="header-button" onclick="" type="button" id="closeEdit"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <input type="file" accept="image/JPG, image/PNG image/jpeg" id="edit_input_file" name="avatar">
+    <div class="edit-content ">
+      <img src="/images/demo.png" alt="" id="imageEdit">
+   
+    <label  class="" for="edit_input_file">
+      Change
+    </label>
+  </div>
+   
+  
+    <div class="left-form-sec d-flex flex-column gap-3">
+        <div class="row">
+            <div class="col-3 d-flex flex-column">
+                <label for="salutationEdit" class="form-label">Salutation</label>
+                <select class="form-select form-border" aria-label="Default select example" id="salutationEdit">
+                    <option selected>select </option>
+                    <option value="Mr">Mr</option>
+                    <option value="Mrs">Mrs</option>
+                      <option value="Ms">Ms</option>
+                  </select>
+                  <div class="msgError"></div>
+            </div>
+            <div class="col-4 d-flex flex-column ">
+                <label for="firstnameEdit" class="form-label">First Name</label>
+                <input class="form-control form-border" type="text" placeholder="First Name" aria-label="default input example" id="firstnameEdit">
+                <div class="msgError"></div>
+            </div>
+            <div class="col-5 d-flex flex-column">
+                <label for="lastnameEdit" class="form-label">Last Name</label>
+                <input class="form-control form-border" type="text" placeholder="Last Name" aria-label="default input example" id="lastnameEdit">
+                <div class="msgError"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label for="emailEdit" class="form-label">Email Address</label>
+               <input type="email" class="form-control form-border"  placeholder="name@example.com" id="emailEdit">
+               <div class="msgError"></div>
+            </div>
+            <div class="col-6">
+                <label for="mobileEdit" class="form-label">Mobile Number </label>
+                <input class="form-control form-border" type="number" placeholder="enter mobile number" aria-label="default input example" id="mobileEdit">
+                <div class="msgError"></div>
+            </div> 
+        </div>
+        <div class="row">
+          <div class="col-6">
+              <label for="usernameEdit" class="form-label">User Name</label>
+             <input type="text" class="form-control form-border"  placeholder="enter user name" id="usernameEdit">
+             <div class="msgError"></div>
+          </div>
+          <div class="col-6">
+              <label for="passwordEdit" class="form-label">Password </label>
+              <input class="form-control form-border" type="password" placeholder="enter password" aria-label="default input example" id="passwordEdit">
+              <div class="msgError"></div>
+          </div> 
+      </div>
+        <div class="row">
+            <div class="col-6 d-flex flex-column">
+                <label for="dobEdit" class="form-label">Date of Birth  </label>
+                <input class="form-control form-border" type="date" placeholder="select date of Birth"  aria-label="default input example" id="dobEdit">
+                <div class="msgError"></div>
+            </div>
+            <div class="col-6 ">
+                <label for="exampleFormControlInput1" class="form-label">Gender </label>
+                    <div class="d-flex">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="editGender" id="maleEdit" value="Male"  >
+                            <label class="form-check-label" for="maleEdit">
+                              Male
+                            </label>
+                        </div>
+                        <div class="form-check mx-3">
+                            <input class="form-check-input" type="radio" name="editGender" id="femaleEdit" value="female">
+                            <label class="form-check-label" for="femaleEdit">
+                             Female
+                            </label>
+                        </div>
+                    </div>
+                    <div class="msgError"></div>
+            </div> 
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <label for="qualificationEdit" class="form-label">Qualifications </label>
+                    <input class="form-control form-border" type="text" placeholder="enter qualifications" aria-label="default input example" id="qualificationEdit">
+                    <div class="msgError"></div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                  <label for="addressEdit" class="form-label">Address  </label>
+                  <input class="form-control form-border" type="text" placeholder="enter address" aria-label="default input example" id="addressEdit">
+                  <div class="msgError"></div>
+              </div>
+          </div>
+            <div class="row">
+                <div class="col-6">
+                    <label for="countryEdit" class="form-label">Country </label>
+                    <select class="form-select form-border" aria-label="Default select example" id="countryEdit">
+                        <option selected>select </option>
+                        <option value="India">India</option>
+                        <option value="pakistan">pakistan</option>
+                        <option value="UAE">UAE</option>
+                      </select>
+                      <div class="msgError"></div>
+                </div>
+                <div class="col-6">
+                    <label for="stateEdit" class="form-label">State 
+                         </label>
+                    <select class="form-select form-border" aria-label="Default select example" id="stateEdit">
+                        <option selected>select </option>
+                        <option value="kerala">kerala</option>
+                        <option value="goa">goa</option>
+                        <option value="karnataka">karnataka</option>
+                      </select>
+                      <div class="msgError"></div>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-6">
+                <label for="cityEdit" class="form-label">City  </label>
+                <input class="form-control form-border" type="text" placeholder="enter City" aria-label="default input example" id="cityEdit">
+                <div class="msgError"></div>
+            </div>
+            <div class="col-6">
+                <label for="pinEdit" class="form-label">Pin/Zip  </label>
+                <input class="form-control form-border" type="number" placeholder="enter Pin/Zip " aria-label="default input example" id="pinEdit">
+                <div class="msgError"></div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="bottom-button bg-white  p-4">
+              <div class="button d-flex justify-content-end">
+                  <button class="btn unfilled" onclick="" type="button" id="editCancel">Cancel</button>
+                  <button class=" btn filled_btn" type="button" id="saveEdit">Save Changes</button>
+              </div>
+          </div>
+      </div>
+        </div>
+  </form>

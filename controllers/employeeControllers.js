@@ -2,8 +2,7 @@ const asyncHandler = require("express-async-handler");
  const Employee = require("../models/employeeModel");
  const fs = require("fs");
  const path = require("path");
-const employeeServices = require("../services/employeeServices");
-
+ const employeeService = require("../services/employeeServices");
 
  const mainHome = async(req,res)=>{
     res.render("index")
@@ -14,107 +13,61 @@ const employeeServices = require("../services/employeeServices");
  }
 
 
-// get all employee
-const getEmployees = asyncHandler(async(req,res)=>{
-   try {
-    const page = parseInt(req.query.page) ||1;
-    const limit = parseInt(req.query.limit) ||5;
-    const search = req.query.search ||'';
+// Get all employees
+const getEmployees = asyncHandler(async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const search = req.query.search || '';
     const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
-    const result = await employeeServices.getEmployees(page,limit,search,sortOrder);
- 
 
+    const result = await employeeService.getEmployees(page, limit, search, sortOrder);
 
-
-     return res.status(200).json(
-        {
-            data:result.data,
-            search:result.search,
-            page:result.page,
-            count:result.count,
-            revdata: result.revdata // Pass sortOrder to the frontend
-        }
-    );
-
-    
-   } catch (error) {
-    return res.status(400).json({
-        success: false,
-        msg: error.message
-      });
-   }
-});
-  
-
-// create  emplyeee
-
- const createEmployee = asyncHandler(async(req,res)=>{
-    const newEmp = {   salutation,
-        firstName,
-        lastName,
-        email,
-        phone,
-        userName,
-        password,
-        dob,
-        gender,
-        qualification,
-        address,
-        country,
-        state,
-        city,
-        pinZip,
-    } = req.body;
-    if(!newEmp)
-        {
-        res.status(400);
-        throw new Error("all fields are mandatory !");
-    }
-    const employee = await Employee.create(newEmp)
-    res.status(201).json(employee)
- });
-
- // update  employee
-
-const updateEmployee = asyncHandler(async(req,res)=>{
-    const employee=await Employee.findById(req.params.id);
-    if(!employee){
-        res.status(404);
-        throw new Error("employee not  found");
-    }
-    const upadtedEmployee=await Employee.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        {new:true}
-    );
-   
-    res.status(200).json(upadtedEmployee);
+    return res.status(200).json({
+        data: result.data,
+        search: result.search,
+        page: result.page,
+        count: result.count,
+        revdata: result.revdata,
+    });
 });
 
-// get one employee
+// Create employee
+const createEmployee = asyncHandler(async (req, res) => {
+    const newEmp = req.body;
 
-const getEmployee = asyncHandler(async(req,res)=>{
-    const employee=await Employee.findById(req.params.id);
-    if(!employee){
-        res.status(404);
-        throw new Error("employee not found")
+    if (!newEmp) {
+        return res.status(400).json({ success: false, msg: 'All fields are mandatory!' });
     }
-    res.status(200).json(employee)
+
+    const employee = await employeeService.createEmployee(newEmp);
+    res.status(201).json(employee);
 });
 
-// delete emplyeee
+// Update employee
+const updateEmployee = asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const updatedData = req.body;
 
-const deleteEmployee = asyncHandler(async(req,res)=>{
-    const employee = await Employee.findByIdAndDelete(req.params.id);
-   
-    if(!employee){
-        res.status(404);
-        throw new Error("employee not found");
-    }
-   const imagePath = path.join(__dirname,"..","assets","empImage", `${req.params.id}.png`);
-   fs.unlinkSync(imagePath);
+    const updatedEmployee = await employeeService.updateEmployee(id, updatedData);
+    res.status(200).json(updatedEmployee);
+});
+
+// Get employee by ID
+const getEmployee = asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const employee = await employeeService.getEmployeeById(id);
     res.status(200).json(employee);
-})
+});
+
+// Delete employee by ID
+const deleteEmployee = asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const deletedEmployee = await employeeService.deleteEmployeeById(id);
+    res.status(200).json(deletedEmployee);
+});
+
+
+
 
 //image post
 
@@ -125,8 +78,8 @@ const deleteEmployee = asyncHandler(async(req,res)=>{
     console.log("requested params",req.params);
     if(req.file){
         const avatarPath=`${req.file.filename}`;
-        console.log("avather path is :",avatarPath);
-        console.log("filenames are :",req.file.filename);
+        // console.log("avather path is :",avatarPath);
+        // console.log("filenames are :",req.file.filename);
         await Employee.findByIdAndUpdate(req.params.id,{avatar :avatarPath})
 
             console.log('Image uploaded successfully...............');

@@ -37,7 +37,7 @@ const userSignup=async (req,res)=>{
           res.render("otp",{err:null});
           console.log(otp);
           
-    };
+};
 
  const userLogin=async(req,res)=>{
     let {email,password} = req.body;
@@ -51,10 +51,11 @@ const userSignup=async (req,res)=>{
     
     }else{
       let user = {email:email}
-    const token = jwt.sign(user,process.env.SECRET_KEY,{expiresIn:"15m"})
-    // console.log(token);
-    res.cookie("jwt",token).redirect("/employees/dashboard");
-    console.log("its here");
+    const token = jwt.sign(user,process.env.SECRET_KEY)
+    res.cookie("jwt", token, { httpOnly: true, maxAge: 15 * 60 * 1000 }); 
+    return res.redirect("/employees/dashboard");
+    // res.cookie("jwt",token).redirect("/employees/dashboard");
+
     }
   }else{
 
@@ -62,8 +63,12 @@ const userSignup=async (req,res)=>{
     res.render("login",{err:err});
   }  
   
- }
+}
 
+const userLogout = (req, res) => {
+  res.clearCookie("jwt");  // Clear the JWT cookie
+  res.redirect("/user/login");  // Redirect to the login page
+};
 
 const otpVerification = async (req,res) => {
   const {currentOtp} = req.body;
@@ -84,12 +89,14 @@ const otpVerification = async (req,res) => {
   }else{
     res.render("otp",{err:"Invalid otp"});
   }
- 
- 
 }
+
+
  module.exports = {
     userSignup,
     userLogin,
-    otpVerification
+    otpVerification,
+    userLogout,
+    
  }
 

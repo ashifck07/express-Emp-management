@@ -676,7 +676,7 @@ function deleteEmployee(id){
         if(id===element._id)
         {
         alldata.splice(index,1)
-        tableDataShow(0);
+        tableDataShow(1);
         }
 
      });
@@ -772,3 +772,7 @@ function previous(){
        tableDataShow(currentPage);
     }
 }
+
+
+
+
