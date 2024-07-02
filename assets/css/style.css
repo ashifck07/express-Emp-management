@@ -387,19 +387,13 @@ input.form-control,select.form-select,.range,.color-bar{
 
     border-radius: 20px;
 }
-
 .form-control:focus,.form-select:focus {
     box-shadow: none;
 }
-
-
 /* add form imge input */
-
 #input_file{
     display: none;
 }
-
-
 /* image avara size */
 #avatarImg{
  width: 100px;
@@ -407,7 +401,6 @@ input.form-control,select.form-select,.range,.color-bar{
  border-radius: 50%;
  align-self: center;
 }
-
 /* vallidation msg color */
 .error,.msgError{
     color: red;
@@ -417,10 +410,22 @@ input.form-control,select.form-select,.range,.color-bar{
 #edit_input_file{
     display: none;
 }
-
-
 /* active color */
 .activeButton{
     background-color: #4318FF !important;
     color: white !important;
+}
+/* form editions in add and edit */
+#imgEdit {
+    display: none;
+}
+.footer_edit{
+    display: none;
+}
+
+#editHeader{
+    display: none !important;
+}
+#uploadImage,#footer_add{
+    display: none;
 }

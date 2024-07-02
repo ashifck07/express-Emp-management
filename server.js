@@ -19,6 +19,7 @@ connectDb();
 app.use("/employees",require("./routes/employeeRoutes"))
 app.use("/user",userRoute)
 
+
 app.use(errorHandler)
 app.listen(port,()=>{
     console.log(`Server is runnig on ${port}`);

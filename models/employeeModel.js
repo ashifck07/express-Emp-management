@@ -1,81 +1,81 @@
 const { Timestamp } = require("mongodb");
-const mongoose=require("mongoose");
+const mongoose = require("mongoose");
 
 const employeeSchema = mongoose.Schema({
-    salutation:{
-        type:String,
-        required:[true,"salutation required"]
+    salutation: {
+        type: String,
+        required: [true, "salutation required"]
     },
-    firstName:{
-        type:String,
-        required:[true,"please add the employee firstName"]
+    firstName: {
+        type: String,
+        required: [true, "please add the employee firstName"]
     },
-    lastName:{
-        type:String,
-        required:[true,"please add the employee firstName"]
+    lastName: {
+        type: String,
+        required: [true, "please add the employee firstName"]
     },
-    email:{
-        type:String,
-        required:[true,"please add the employee email address"]
+    email: {
+        type: String,
+        required: [true, "please add the employee email address"]
     },
-    phone:{
-        type:String,
-        required:[true,"please add the employee phone number"]
+    phone: {
+        type: String,
+        required: [true, "please add the employee phone number"]
     },
-    userName:{
-        type:String,
-        required:[true,"please add the employee userName"]
+    userName: {
+        type: String,
+        required: [true, "please add the employee userName"]
     },
-    password:{
-        type:String,
-        required:[true,"please add the employee password"]
+    password: {
+        type: String,
+        required: [true, "please add the employee password"]
     },
-    dob:{
-        type:String,
-        required:[true,"please add the employee dob"]
+    dob: {
+        type: String,
+        required: [true, "please add the employee dob"]
     },
-    gender:{
-        type:String,
-        required:[true,"please add the employee gender"]
+    gender: {
+        type: String,
+        required: [true, "please add the employee gender"]
     },
-    qualification:{
-        type:String,
-        required:[true,"please add the qualification of employee"]
+    qualification: {
+        type: String,
+        required: [true, "please add the qualification of employee"]
     },
-    address:{
-        type:String,
-        required:[true,"please add the qualification of employee"]
+    address: {
+        type: String,
+        required: [true, "please add the qualification of employee"]
     },
-    country:{
-        type:String,
-        required:[true,"please add the country"]
+    country: {
+        type: String,
+        required: [true, "please add the country"]
     },
-    state:{
-        type:String,
-        required:[true,"please add the state"]
+    state: {
+        type: String,
+        required: [true, "please add the state"]
     },
-    city:{
-        type:String,
-        required:[true,"please add the city"]
+    city: {
+        type: String,
+        required: [true, "please add the city"]
     },
-    pinZip:{
-        type:String,
-        required:[true,"please add the pinZip"]
+    pinZip: {
+        type: String,
+        required: [true, "please add the pinZip"]
     },
-    avatar:{
-        type:String,
+    avatar: {
+        type: String,
     },
-    
 
 
-    
+
+
 
 },
-{
-    
-        timestamps:true,
-    
-}
+    {
+
+        timestamps: true,
+
+    }
 );
 
-module.exports=mongoose.model("Employee",employeeSchema)
+module.exports = mongoose.model("Employee", employeeSchema)

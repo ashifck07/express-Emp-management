@@ -1,59 +1,52 @@
-
-let alldata=[];
-let currentPage=1;
+let alldata = [];
+let currentPage = 1;
 let dataCount;
- let pageList =document.getElementById("pageList");
-let limits=parseInt(document.getElementById("pageList").value);
-pageList.addEventListener("change",()=>{
-    limits=parseInt(document.getElementById("pageList").value);
-    fetching(limits,currentPage);
-    listTable(limits,dataCount);
+let pageList = document.getElementById("pageList");
+let limits = parseInt(document.getElementById("pageList").value);
+pageList.addEventListener("change", () => {
+    limits = parseInt(document.getElementById("pageList").value);
+    fetching(limits, currentPage);
+    listTable(limits, dataCount);
 });
 
-let searchInput="";
-function search(){
-     searchInput=document.getElementById("searchBar").value;
-    fetching(limits,currentPage)
+let searchInput = "";
+function search() {
+    searchInput = document.getElementById("searchBar").value;
+    fetching(limits, currentPage)
 }
-
-
-
-
-
-async function fetching(limits,currentPage){
-try{
+//fetching data 
+async function fetching(limits, currentPage) {
+    try {
         const res = await fetch(`http://localhost:5001/employees?page=${currentPage}&limit=${limits}&search=${searchInput}`)
         const data = await res.json();
-        if(!res.ok){
-            throw new Error(`error in fetch ${res.status}`) 
+        if (!res.ok) {
+            throw new Error(`error in fetch ${res.status}`)
         }
-        alldata=data.data;
-        dataCount=data.count;
+        alldata = data.data;
+        dataCount = data.count;
         // alldata.reverse();
-        if(dataCount==0){
-           const table_body= document.getElementById("table_body");
-        table_body.innerHTML="<h5>employee not found</h5>";
-        }else{
-            displayEmployee(alldata,currentPage,limits);
+        if (dataCount == 0) {
+            const table_body = document.getElementById("table_body");
+            table_body.innerHTML = "<h5>employee not found</h5>";
+        } else {
+            displayEmployee(alldata, currentPage, limits);
         }
-        // displayEmployee(alldata,currentPage,limits);
-        listTable(limits,dataCount); 
-     }
-catch(Error){
-    console.log(Error);
+        listTable(limits, dataCount);
+    }
+    catch (Error) {
+        console.log(Error);
     }
 }
-fetching(limits,currentPage);
+fetching(limits, currentPage);
 
+function displayEmployee(data, starts, limit) {
+    const table_body = document.getElementById("table_body");
+    const startIndex = (starts - 1) * limit;
+    let dataInput = "";
 
-function displayEmployee(data,starts,limit){
-    const table_body=document.getElementById("table_body");
-    const startIndex = (starts-1)*limit;
-    let dataInput="";
-
-    for(let i=0;i<data.length;i++){
-        const serialNumber = startIndex+i+1
-        dataInput+=`<tr>
+    for (let i = 0; i < data.length; i++) {
+        const serialNumber = startIndex + i + 1
+        dataInput += `<tr>
         <td scope="row">#${numberCount(serialNumber)}${serialNumber}</td>
         <td><img src="http://localhost:5001/empImage/${data[i]._id}.png" height="30px" width="35px" style="border-radius: 50%">${data[i].salutation}.${data[i].firstName} ${data[i].lastName}</td>
         <td>${data[i].email}</td>
@@ -72,707 +65,499 @@ function displayEmployee(data,starts,limit){
             </ul>
           </div></td>
       </tr>`
-      starts++;
-      table_body.innerHTML=dataInput;
+        starts++;
+        table_body.innerHTML = dataInput;
     }
 }
 
-
-function numberCount(count){
-    if(count<9){
-       return 0
-    }else{
+function numberCount(count) {
+    if (count < 9) {
+        return 0
+    } else {
         return ""
     }
 }
 
-
 // popup and hide  add employee form
-
 const addEmployeform = document.getElementById("addEmploye");
-const overlay= document.getElementById("overlay");
+const overlay = document.getElementById("overlay");
 const closeBtn = document.getElementById("closeBtn");
-const cancelBtn = document.getElementById("cancelBtn");
 const empAddBtn = document.getElementById("empAddBtn");
-const addEmpBtn=document.getElementById("addEmpBtn");
-const employeeAddForm=document.getElementById("employeeAddForm")
+const addEmpBtn = document.getElementById("addEmpBtn");
+const employeeAddForm = document.getElementById("employeeAddForm")
 
-// display form
-const addEmpForm=function(){
-    addEmployeform.style.display="block";
-    overlay.style.display="block"
-    employeeAddForm.reset();
-    avatarImg.src="/images/avatar" ; 
-    
-}
-addEmpBtn.addEventListener('click',addEmpForm);
-// close form
-const addEmpCloseForm=function(){
-    addEmployeform.style.display="none";
-    overlay.style.display="none"
-}
-// close form
-closeBtn.addEventListener('click', function(event) {
-     event.preventDefault();
-     addEmployeform.style.display="none";
-     overlay.style.display="none"
-    });
-
-// cancel btn
-cancelBtn.addEventListener('click', function(event) {
-    event.preventDefault();
-    addEmployeform.style.display="none";
-    overlay.style.display="none"
-   });
-// ovarley close all
-overlay.addEventListener('click',(e)=> {
+// // ovarley close all
+overlay.addEventListener('click', (e) => {
     e.preventDefault();
-    addEmployeform.style.display="none";
-    overlay.style.display="none"
+    addEmployeform.style.display = "none";
+    overlay.style.display = "none"
 })
 
 // add new employee
- 
 
-const salutation=document.getElementById("salutation");
-const firstName=document.getElementById("firstName");
-const lastName=document.getElementById("lastName");
-const emailAddress=document.getElementById("emailAddress");
-const mobileNumber=document.getElementById("mobileNumber");
-const username=document.getElementById("username");
-const password=document.getElementById("password");
-const dateofBirth=document.getElementById("dateofBirth");
-const male=document.getElementById("male");
-const female=document.getElementById("female");
-const qualifications=document.getElementById("qualifications");
-const address=document.getElementById("address");
-const country=document.getElementById("country");
-const state=document.getElementById("state");
-const city=document.getElementById("city");
-const pinZip=document.getElementById("pinZip");
+const salutation = document.getElementById("salutation");
+const firstName = document.getElementById("firstName");
+const lastName = document.getElementById("lastName");
+const emailAddress = document.getElementById("emailAddress");
+const mobileNumber = document.getElementById("mobileNumber");
+const username = document.getElementById("username");
+const password = document.getElementById("password");
+const dateofBirth = document.getElementById("dateofBirth");
+const male = document.getElementById("male");
+const female = document.getElementById("female");
+const qualifications = document.getElementById("qualifications");
+const address = document.getElementById("address");
+const country = document.getElementById("country");
+const state = document.getElementById("state");
+const city = document.getElementById("city");
+const pinZip = document.getElementById("pinZip");
 //dob change
-function DOB(date){
-    const dobArray=date.split("-");
-    let year=dobArray[0];
-    let month=dobArray[1];
-    let day=dobArray[2];
-    let dateformatte=day+"-"+month+"-"+year;
-
-
-
+function DOB(date) {
+    const dobArray = date.split("-");
+    let year = dobArray[0];
+    let month = dobArray[1];
+    let day = dobArray[2];
+    let dateformatte = day + "-" + month + "-" + year;
     return dateformatte;
- }
- function genderCheck(){
-    if(male.checked){
+}
+function genderCheck() {
+    if (male.checked) {
         return "Male"
-    } else if(female.checked){
+    } else if (female.checked) {
         return "Female"
     }
- }
-
- //image input
-const avatarImg=document.getElementById("avatarImg");
-const inputFile=document.getElementById("input_file");
-let checkImage=false;
-
-inputFile.onchange = function(){
-    let imageObject=inputFile.files[0];
-        avatarImg.src =URL.createObjectURL(imageObject)
 }
 
+//image input
+const avatarImg = document.getElementById("avatarImg");
+const inputFile = document.getElementById("input_file");
+let checkImage = false;
 
- async function addNewEmployee() {
-    let addnewEmp={
-        salutation:salutation.value,
-        firstName:firstName.value,
-        lastName:lastName.value,
-        email:emailAddress.value,
-        phone:mobileNumber.value,
-        dob:DOB(dateofBirth.value),
-        gender:genderCheck(),
-        qualification:qualifications.value,
-        address:address.value,
-        city:city.value,
-        state:state.value,
-        country:country.value,
-        userName:username.value,
-        password:password.value,
-        pinZip:pinZip.value
+inputFile.onchange = function () {
+    let imageObject = inputFile.files[0];
+    avatarImg.src = URL.createObjectURL(imageObject)
+}
+
+function formdata() {
+    let addnewEmp = {
+        salutation: salutation.value,
+        firstName: firstName.value,
+        lastName: lastName.value,
+        email: emailAddress.value,
+        phone: mobileNumber.value,
+        dob: DOB(dateofBirth.value),
+        gender: genderCheck(),
+        qualification: qualifications.value,
+        address: address.value,
+        city: city.value,
+        state: state.value,
+        country: country.value,
+        userName: username.value,
+        password: password.value,
+        pinZip: pinZip.value
 
     };
-    try{
-        const res=await fetch(`http://localhost:5001/employees`,{
-            method:"POST",
-            headers:{"Content-type":"application/json"},
-            body:JSON.stringify(addnewEmp)
+    return addnewEmp
+}
+
+async function addNewEmployee() {
+    try {
+        const res = await fetch(`http://localhost:5001/employees`, {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(formdata())
         })
-
-
-        if(!res.ok){
-            throw new Error(`error in post ${res.status}`) 
+        if (!res.ok) {
+            throw new Error(`error in post ${res.status}`)
         }
-        const responseData= await res.json();
-        const avatarId=responseData._id;
-        const formData=new FormData();
-        formData.append("avatar",inputFile.files[0]);
-            await fetch(`http://localhost:5001/employees/${avatarId}/avatar`,{
-                method:"POST",
-                body:formData,
-            });
-        
-        alldata.unshift(addnewEmp);
-        addnewEmp._id=avatarId;
+        const responseData = await res.json();
+        const avatarId = responseData._id;
+        const formData = new FormData();
+        formData.append("avatar", inputFile.files[0]);
+        await fetch(`http://localhost:5001/employees/${avatarId}/avatar`, {
+            method: "POST",
+            body: formData,
+        });
+        alldata.unshift(formdata());
         tableDataShow(1)
         addEmpCloseForm();
         Swal.fire({
             icon: "success",
             title: "Employee Added Successfully!",
             confirmButtonText: "OK",
-          });   
-       
-
-    } catch(eroor){
-        console.log("add eroor",eroor);
+        });
+    } catch (eroor) {
+        console.log("add eroor", eroor);
     }
-
-
 }
 
-
-empAddBtn.addEventListener("click",(e)=>{
+empAddBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    const valid= vallidation();
-    // console.log(valid)
-   
-    if(!valid){
+    const valid = vallidation();
+    if (!valid) {
         return;
     }
-    else{
+    else {
         addNewEmployee();
-
-    }
-
-});
-
-
-
-
-// vallidation 
-
-const errorMsg=document.getElementsByClassName("error");
-const addEmploye=document.getElementById("addEmploye");
-
-
-function vallidation()
-
-{
-    let isvalid=true;
-    const validateInput=(inputData,no,msg)=>{
-
-        if(inputData.value===""){
-          errorMsg[no].innerHTML=msg; 
-        inputData.focus();
-        isvalid=false;
-
-        }
-        else{
-            errorMsg[no].innerHTML="";
-        }
-    }
-    const genderInput=()=>{
-        if(male.checked===false&&female.checked===false){
-            errorMsg[8].innerHTML="select the gender";
-            male.focus()||female.focus();
-            isvalid=false;
-        }
-
-    }
-    const mobileNumberInput=(inputData,no,msg)=>{
-        let mobileValue=inputData.value.trim();
-        if(inputData.value===""){
-            errorMsg[no].innerHTML=msg;
-            inputData.focus();
-            isvalid=false;
-        }else if((mobileValue.length)!=10){
-            errorMsg[no].innerHTML="enter a valid number"; 
-            inputData.focus();
-            isvalid=false;
-
-        }
-        else{
-              errorMsg[no].innerHTML="";
-          }
-
-    }
-    
-    const emailInput=(inputData,no,msg)=>{
-        let emailValue=inputData.value.trim();
-        let emailregex= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if(inputData.value===""){
-            errorMsg[no].innerHTML=msg; 
-            inputData.focus();
-            isvalid=false;
-        }else if(!(emailValue.match(emailregex))){
-            errorMsg[no].innerHTML="enter a valid email"; 
-            inputData.focus();
-            isvalid=false;
-        }
-        else{
-              errorMsg[no].innerHTML="";
-          }
-
-    }
-    
-    
-    validateInput(pinZip,14,"please enter pincode");
-    validateInput(city,13,"please enter city");
-    validateInput(state,12,"select state");
-    validateInput(country,11,"select country");
-    validateInput(address,10,"please enter address");
-    validateInput(qualifications,9,"qualification");
-    genderInput();
-    validateInput(dateofBirth,7,"select dob");
-    validateInput(password,6,"enter password");
-    validateInput(username,5,"please enter userName");
-    mobileNumberInput(mobileNumber,4,"please enter mobilenumber");
-    emailInput(emailAddress,3,"enter email");
-    validateInput(lastName,2,"please enter lastName");
-    validateInput(firstName,1,"please enter firstname");
-    validateInput(salutation,0,"select salutation");
-   
-    const removeValidationInput=(no)=>{
-        errorMsg[no].innerHTML=""
-    }
-
-
-
-    const removeGenderInput=()=>{
-        addEventListener('input',()=>{
-         if(male.checked||female.checked){
-             errorMsg[8].innerHTML="";
-          }
-        })
-     }
-
-
-    salutation.addEventListener('input',()=>{removeValidationInput(0)})
-    firstName.addEventListener('input',()=>{removeValidationInput(1)})
-    lastName.addEventListener('input',()=>{removeValidationInput(2)})
-    emailAddress.addEventListener('input',()=>{removeValidationInput(3)})
-    mobileNumber.addEventListener('input',()=>{removeValidationInput(4)})
-    username.addEventListener('input',()=>{removeValidationInput(5)})
-    password.addEventListener('input',()=>{removeValidationInput(6)})
-    dateofBirth.addEventListener('input',()=>{removeValidationInput(7)})
-    removeGenderInput();
-    qualifications.addEventListener('input',()=>{removeValidationInput(9)})
-    address.addEventListener('input',()=>{removeValidationInput(10)})
-    country.addEventListener('input',()=>{removeValidationInput(11)})
-    state.addEventListener('input',()=>{removeValidationInput(12)})
-    city.addEventListener('input',()=>{removeValidationInput(13)})
-    pinZip.addEventListener('input',()=>{removeValidationInput(14)})
-   return isvalid;
-    
-}
-
-////editing section
-
-
-const salutationEdit= document.getElementById("salutationEdit");
-const firstnameEdit= document.getElementById("firstnameEdit");
-const lastnameEdit= document.getElementById("lastnameEdit");
-const emailEdit= document.getElementById("emailEdit");
-const mobileEdit= document.getElementById("mobileEdit");
-const usernameEdit= document.getElementById("usernameEdit");
-const passwordEdit= document.getElementById("passwordEdit");
-const dobEdit= document.getElementById("dobEdit");
-const maleEdit= document.getElementById("maleEdit");
-const femaleEdit= document.getElementById("femaleEdit");
-const qualificationEdit= document.getElementById("qualificationEdit");
-const addressEdit= document.getElementById("addressEdit");
-const countryEdit= document.getElementById("countryEdit");
-const stateEdit= document.getElementById("stateEdit");
-const cityEdit= document.getElementById("cityEdit");
-const pinEdit=document.getElementById("pinEdit");
-//show and remove forms ids
-const editFormBtn=document.getElementById("editForm");
-const editEmpForm=document.getElementById("editPopup");
-const editCancel=document.getElementById("editCancel");
-const saveEdit=document.getElementById("saveEdit");
-const closeEdit=document.getElementById("closeEdit");
-
-//image 
-const imageEdit=document.getElementById("imageEdit");
-const edit_input_file=document.getElementById("edit_input_file");
- let imgCheck=false;
-edit_input_file.onchange = function(){
-    imgCheck=true;
-    let imageObjectEdit=edit_input_file.files[0];
-    imageEdit.src =URL.createObjectURL(imageObjectEdit)
-}
-let updatedData;
-async function editEmployee(id){
-    editEmpFormOpen();
-    try{
-        const res=await fetch(`http://localhost:5001/employees/${id}`,{
-        method:"GET",
-        })
-        if(!res.ok){
-            throw new Error(`error in get data ${res.status}`) 
-        }
-        const data= await res.json();
-
-        salutationEdit.value=data.salutation;
-        firstnameEdit.value=data.firstName;
-        lastnameEdit.value=data.lastName;
-        emailEdit.value=data.email;
-        mobileEdit.value=data.phone;
-        usernameEdit.value=data.userName;
-        passwordEdit.value=data.password;
-        dobEdit.value=DOB(data.dob);
-        genderCheck();
-        qualificationEdit.value=data.qualification;
-        addressEdit.value=data.address;
-        countryEdit.value=data.country;
-        stateEdit.value=data.state;
-        cityEdit.value=data.city;
-        pinEdit.value=data.pinZip;
-
-            function genderCheck(){
-            const maleEdit= document.getElementById("maleEdit");
-            const femaleEdit= document.getElementById("femaleEdit");
-            gender = data.gender;
-            if (gender === "Male") {
-                maleEdit.checked = true;
-            } else 
-                femaleEdit.checked = true;
-            
-         }
-       
-
-        imageEdit.src=(`http://localhost:5001/empImage/${id}.png`);
-        
-    }
-    catch(error){
-
-        console.log(`edit form error`,error);
-      
-    }
-
-    //save edit click
-saveEdit.addEventListener('click',(e)=>{
-    e.preventDefault();
-    const valid=  editValidation();
-
-    if(!valid){
-        return
-    }
-    else{
-        editEmpUpdate(id);
     }
 });
 
-async function editEmpUpdate(id){
-    let editData={
-        salutation:salutationEdit.value,
-        firstName:firstnameEdit.value,
-        lastName:lastnameEdit.value,
-        email:emailEdit.value,
-        phone:mobileEdit.value,
-        dob:DOB(dobEdit.value),
-        gender:(maleEdit.checked===true) ? 'Male':'Female',
-        qualification:qualificationEdit.value,
-        address:addressEdit.value,
-        city:cityEdit.value,
-        state:stateEdit.value,
-        country:countryEdit.value,
-        userName:usernameEdit.value,
-        password:passwordEdit.value,
-        pinZip:pinEdit.value
-    }
-try{
-    const res=await fetch(`http://localhost:5001/employees/${id}`,{
-        method:"PUT",
-         headers:{"Content-type":"application/json"},
-        body:JSON.stringify(editData)
-    })
-    if(!res.ok){
-        throw new Error(`edit is not updated${res.status}`)
-    }
-    const data=await res.json();
-    const avatarEdit=edit_input_file.files[0];
-    const editFormaData=new FormData();
-    editFormaData.append("avatar",avatarEdit);
-   if(imgCheck==true){
-      await fetch(`http://localhost:5001/employees/${id}/avatar`,{
-        method:"POST",
-        body:editFormaData,
-    });
-    
-   }
-  
-    const result= await Swal.fire({
-        icon: "success",
-            title: "Employee Edited Successfully!",
-        confirmButtonText: 'Ok'
-      })
-      if(result.isConfirmed)
-    {
-    Swal.close();
-    }
-    location.reload();
-    closeFromEmpEdit();
+// vallidation of form 
 
-}
-catch(error){
+const errorMsg = document.getElementsByClassName("error");
+const addEmploye = document.getElementById("addEmploye");
 
-    console.log(`edit form error`,error);
-  
-}
-}
+function vallidation() {
+    let isvalid = true;
+    const validateInput = (inputData, no, msg) => {
 
-}
-
-
-//edit vallidation
-const error=document.getElementsByClassName("msgError");
-function editValidation(){
-    let isvalid=true;
-    const validateInput=(inputData,no,msg)=>{
-        if(inputData.value===""){
+        if (inputData.value === "") {
+            errorMsg[no].innerHTML = msg;
             inputData.focus();
-            error[no].innerHTML=msg;
-            isvalid=false; 
-           
-        }else{
-            error[no].innerHTML="";
+            isvalid = false;
+
+        }
+        else {
+            errorMsg[no].innerHTML = "";
         }
     }
-    const genderInput=()=>{
-        if(!maleEdit.checked===true&&!femaleEdit.checked===true){
-            error[8].innerHTML="select the gender";
-            inputData.focus();
-            isvalid=false; 
+    const genderInput = () => {
+        if (male.checked === false && female.checked === false) {
+            errorMsg[8].innerHTML = "select the gender";
+            male.focus() || female.focus();
+            isvalid = false;
         }
 
     }
-    const mobileNumberInput=(inputData,no,msg)=>{
-        let mobileValue=inputData.value.trim();
-        if(inputData.value===""){
-            error[no].innerHTML=msg; 
+    const mobileNumberInput = (inputData, no, msg) => {
+        let mobileValue = inputData.value.trim();
+        if (inputData.value === "") {
+            errorMsg[no].innerHTML = msg;
             inputData.focus();
-            isvalid=false; 
-        }else if((mobileValue.length)!=10){
-            error[no].innerHTML="enter a valid number";
+            isvalid = false;
+        } else if ((mobileValue.length) != 10) {
+            errorMsg[no].innerHTML = "enter a valid number";
             inputData.focus();
-            isvalid=false; 
+            isvalid = false;
+
         }
-        else{
-            error[no].innerHTML="";
-          }
-
-    }
-    const emailInput=(inputData,no,msg)=>{
-        let emailValue=inputData.value.trim();
-        let emailregex= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if(inputData.value===""){
-            error[no].innerHTML=msg; 
-            inputData.focus();
-            isvalid=false; 
-        }else if(!(emailValue.match(emailregex))){
-            error[no].innerHTML="enter a valid email";
-            inputData.focus(); 
-            isvalid=false; 
+        else {
+            errorMsg[no].innerHTML = "";
         }
-        else{
-            error[no].innerHTML="";
-          }
 
     }
 
-    const removeValidationInput=(no)=>{
-        error[no].innerHTML=""
-    }
-    const removeGenderInput=()=>{
-       addEventListener('input',()=>{
-        if(male.checked||female.checked){
-            error[8].innerHTML="";
-         }
-       })
-    }
-    
+    const emailInput = (inputData, no, msg) => {
+        let emailValue = inputData.value.trim();
+        let emailregex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (inputData.value === "") {
+            errorMsg[no].innerHTML = msg;
+            inputData.focus();
+            isvalid = false;
+        } else if (!(emailValue.match(emailregex))) {
+            errorMsg[no].innerHTML = "enter a valid email";
+            inputData.focus();
+            isvalid = false;
+        }
+        else {
+            errorMsg[no].innerHTML = "";
+        }
 
-    validateInput(salutationEdit,0,"select salutation");
-    validateInput(firstnameEdit,1,"please enter firstname");
-    validateInput(lastnameEdit,2,"please enter lastName");
-    emailInput(emailEdit,3,"enter email");
-    mobileNumberInput(mobileEdit,4,"please enter mobilenumber");
-    validateInput(usernameEdit,5,"please enter userName");
-    validateInput(passwordEdit,6,"enter password");
-    validateInput(dobEdit,7,"select dob");
+    }
+
+    validateInput(pinZip, 14, "please enter pincode");
+    validateInput(city, 13, "please enter city");
+    validateInput(state, 12, "select state");
+    validateInput(country, 11, "select country");
+    validateInput(address, 10, "please enter address");
+    validateInput(qualifications, 9, "qualification");
     genderInput();
-    validateInput(qualificationEdit,9,"qualification");
-    validateInput(addressEdit,10,"please enter address");
-    validateInput(countryEdit,11,"select country");
-    validateInput(stateEdit,12,"select state");
-    validateInput(cityEdit,13,"please enter city");
-    validateInput(pinEdit,14,"please enter pincode");
+    validateInput(dateofBirth, 7, "select dob");
+    validateInput(password, 6, "enter password");
+    validateInput(username, 5, "please enter userName");
+    mobileNumberInput(mobileNumber, 4, "please enter mobilenumber");
+    emailInput(emailAddress, 3, "enter email");
+    validateInput(lastName, 2, "please enter lastName");
+    validateInput(firstName, 1, "please enter firstname");
+    validateInput(salutation, 0, "select salutation");
 
+    const removeValidationInput = (no) => {
+        errorMsg[no].innerHTML = ""
+    }
 
-    salutationEdit.addEventListener('input',()=>{removeValidationInput(0)})
-    firstnameEdit.addEventListener('input',()=>{removeValidationInput(1)})
-    lastnameEdit.addEventListener('input',()=>{removeValidationInput(2)})
-    emailEdit.addEventListener('input',()=>{removeValidationInput(3)})
-    mobileEdit.addEventListener('input',()=>{removeValidationInput(4)})
-    usernameEdit.addEventListener('input',()=>{removeValidationInput(5)})
-    passwordEdit.addEventListener('input',()=>{removeValidationInput(6)})
-    dobEdit.addEventListener('input',()=>{removeValidationInput(7)})
+    const removeGenderInput = () => {
+        addEventListener('input', () => {
+            if (male.checked || female.checked) {
+                errorMsg[8].innerHTML = "";
+            }
+        })
+    }
+
+    salutation.addEventListener('input', () => { removeValidationInput(0) })
+    firstName.addEventListener('input', () => { removeValidationInput(1) })
+    lastName.addEventListener('input', () => { removeValidationInput(2) })
+    emailAddress.addEventListener('input', () => { removeValidationInput(3) })
+    mobileNumber.addEventListener('input', () => { removeValidationInput(4) })
+    username.addEventListener('input', () => { removeValidationInput(5) })
+    password.addEventListener('input', () => { removeValidationInput(6) })
+    dateofBirth.addEventListener('input', () => { removeValidationInput(7) })
     removeGenderInput();
-    qualificationEdit.addEventListener('input',()=>{removeValidationInput(9)})
-    addressEdit.addEventListener('input',()=>{removeValidationInput(10)})
-    countryEdit.addEventListener('input',()=>{removeValidationInput(11)})
-    stateEdit.addEventListener('input',()=>{removeValidationInput(12)})
-    cityEdit.addEventListener('input',()=>{removeValidationInput(13)})
-    pinEdit.addEventListener('input',()=>{removeValidationInput(14)})
-      
+    qualifications.addEventListener('input', () => { removeValidationInput(9) })
+    address.addEventListener('input', () => { removeValidationInput(10) })
+    country.addEventListener('input', () => { removeValidationInput(11) })
+    state.addEventListener('input', () => { removeValidationInput(12) })
+    city.addEventListener('input', () => { removeValidationInput(13) })
+    pinZip.addEventListener('input', () => { removeValidationInput(14) })
     return isvalid;
-    
-}
 
-//display and hide the edit employee form
-
-
-const closeFromEmpEdit=function(){
-    editEmpForm.style.display="none";
-    overlay.style.display="none";
-}
-editCancel.addEventListener('click',closeFromEmpEdit);
-closeEdit.addEventListener('click',closeFromEmpEdit);
-overlay.addEventListener('click',closeFromEmpEdit);
-
-const editEmpFormOpen=function(){
-    editEmpForm.style.display="block";
-    overlay.style.display="block";
 }
 
 
 
-
+//updated image section storage file
+const imageEdit = document.getElementById("imageEdit");
+const edit_input_file = document.getElementById("edit_input_file");
+let imgCheck = false;
+edit_input_file.onchange = function () {
+    imgCheck = true;
+    let imageObjectEdit = edit_input_file.files[0];
+    imageEdit.src = URL.createObjectURL(imageObjectEdit)
+}
 
 //delete section
 
-
-function deleteEmployee(id){
+function deleteEmployee(id) {
     openDltMsg();
-    deleteBtn.addEventListener('click',async function(){
-      try{
-        const res =await fetch(`http://localhost:5001/employees/${id}`,{
-            method:"DELETE"
-        });
-        if(!res.ok){
-            throw new Error(`delete cant done,${res.status}`);
-        }
-    alldata.filter((element,index )=> {
+    deleteBtn.addEventListener('click', async function () {
+        try {
+            const res = await fetch(`http://localhost:5001/employees/${id}`, {
+                method: "DELETE"
+            });
+            if (!res.ok) {
+                throw new Error(`delete cant done,${res.status}`);
+            }
+            alldata.filter((element, index) => {
 
-        if(id===element._id)
-        {
-        alldata.splice(index,1)
-        tableDataShow(1);
-        }
+                if (id === element._id) {
+                    alldata.splice(index, 1)
+                    tableDataShow(1);
+                }
 
-     });
-    const result= await Swal.fire({
-        title: 'Delete!',
-        text: 'Do you want to continue',
-        icon: 'error',
-        confirmButtonText: 'Ok'
-      })
-      if(result.isConfirmed)
-    {
-    Swal.close();
-    }
-    closeDltMsg();
-      }
-      catch(error){
-        console.log(error);
-      }
+            });
+            const result = await Swal.fire({
+                title: 'Delete!',
+                text: 'Do you want to continue',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+            if (result.isConfirmed) {
+                Swal.close();
+            }
+            closeDltMsg();
+        }
+        catch (error) {
+            console.log(error);
+        }
     })
-    
+
 }
 
 // display and hide delete 
- const deleteSection=document.getElementById("deletepopup");
- const closeDltBtn=document.getElementById("closeDlt");
- const cancelDltBtn=document.getElementById("cancelDlt");
- const deleteBtn=document.getElementById("deleteBtn");
+const deleteSection = document.getElementById("deletepopup");
+const closeDltBtn = document.getElementById("closeDlt");
+const cancelDltBtn = document.getElementById("cancelDlt");
+const deleteBtn = document.getElementById("deleteBtn");
 
 
-const openDltMsg=function(){
-    deleteSection.style.display="block";
-    overlay.style.display="block";
+const openDltMsg = function () {
+    deleteSection.style.display = "block";
+    overlay.style.display = "block";
 }
-const closeDltMsg=function(){
-    deleteSection.style.display="none";
-    overlay.style.display="none";
+const closeDltMsg = function () {
+    deleteSection.style.display = "none";
+    overlay.style.display = "none";
 }
-closeDltBtn.addEventListener('click',closeDltMsg)
-cancelDltBtn.addEventListener('click',closeDltMsg)
-overlay.addEventListener('click',closeDltMsg)
-
+closeDltBtn.addEventListener('click', closeDltMsg)
+cancelDltBtn.addEventListener('click', closeDltMsg)
+overlay.addEventListener('click', closeDltMsg)
 
 //pagination 
-
-
-
-const pageNumberBtn=document.getElementById("pageNumber");
-
+const pageNumberBtn = document.getElementById("pageNumber");
 let buttonNumber;
- function listTable(limits,dataCount){
-    let pageNumberList=limits;
+function listTable(limits, dataCount) {
+    let pageNumberList = limits;
 
-    buttonNumber=Math.ceil(dataCount/pageNumberList);
-    // console.log("number",buttonNumber);
-    let numberofpage=""
-    for(let i=1;i<=buttonNumber;i++){
-        numberofpage+=`<li class="page-item" id="pageNumber"><a class="page-link d-flex gap-2" href="#" onclick="tableDataShow(${i})">${i}</a></li>`
+    buttonNumber = Math.ceil(dataCount / pageNumberList);
+    let numberofpage = ""
+    for (let i = 1; i <= buttonNumber; i++) {
+        numberofpage += `<li class="page-item" id="pageNumber"><a class="page-link d-flex gap-2" href="#" onclick="tableDataShow(${i})">${i}</a></li>`
     }
-    pageNumberBtn.innerHTML=numberofpage;
-   
+    pageNumberBtn.innerHTML = numberofpage;
+
 }
 
-function tableDataShow(nextList){
-    currentPage=nextList;
-    fetching(limits,currentPage);
+function tableDataShow(nextList) {
+    currentPage = nextList;
+    fetching(limits, currentPage);
 }
 
 // // final page
 
-function finalpage(){
-    currentPage =buttonNumber;
+function finalpage() {
+    currentPage = buttonNumber;
 
     tableDataShow(currentPage);
 }
 
 // //next
-function next(){
-    if(currentPage<buttonNumber){
+function next() {
+    if (currentPage < buttonNumber) {
         currentPage++;
         tableDataShow(currentPage)
-    }else{
+    } else {
         tableDataShow(currentPage);
-        
+
     }
 }
 // //  previous page
-function previous(){
-    if(currentPage>1){
+function previous() {
+    if (currentPage > 1) {
         currentPage--;
         tableDataShow(currentPage);
     }
-    else{
-       tableDataShow(currentPage);
+    else {
+        tableDataShow(currentPage);
     }
 }
+// updated data section
+imgEdit = document.getElementById("imgEdit");
+editHeader = document.getElementById("editHeader");
+addHeader = document.getElementById("addHeader")
 
+function editEmpForm() {
+    addEmployeform.style.display = "block";
+    overlay.style.display = "block";
+    uploadImage.style.display = "none";
+    footer_add.style.display = "none";
 
+    imgEdit.style.display = "block";
+    footer_edit.style.display = "block";
+    ChangeName.textContent = "Edit Employee"
+    employeeAddForm.reset();
 
+}
 
+const addEmpForm = function () {
+    addEmployeform.style.display = "block";
+    overlay.style.display = "block";
+    uploadImage.style.display = "block"
+    employeeAddForm.reset();
+    avatarImg.src = "/images/avatar";
+    footer_add.style.display = "block"
+    ChangeName.textContent = "Add Employee"
+
+}
+const addEmpCloseForm = function () {
+    addEmployeform.style.display = "none";
+    overlay.style.display = "none"
+    employeeAddForm.reset();
+    uploadImage.style.display = "none";
+    footer_add.style.display = "none";
+    imgEdit.style.display = "none";
+    footer_edit.style.display = "none";
+}
+let editId = '';
+async function editEmployee(id) {
+    editId = id;
+    editEmpForm();
+    try {
+        const res = await fetch(`http://localhost:5001/employees/${editId}`, {
+            method: "GET",
+        })
+        if (!res.ok) {
+            throw new Error(`error in get data ${res.status}`)
+        }
+        const data = await res.json();
+        salutation.value = data.salutation;
+        firstName.value = data.firstName;
+        lastName.value = data.lastName;
+        emailAddress.value = data.email;
+        mobileNumber.value = data.phone;
+        username.value = data.userName;
+        password.value = data.password;
+        dateofBirth.value = DOB(data.dob);
+        genderCheck();
+        qualifications.value = data.qualification;
+        address.value = data.address;
+        country.value = data.country;
+        state.value = data.state;
+        city.value = data.city;
+        pinZip.value = data.pinZip;
+
+        function genderCheck() {
+            const maleEdit = document.getElementById("male");
+            const femaleEdit = document.getElementById("female");
+            gender = data.gender;
+            if (gender === "Male") {
+                maleEdit.checked = true;
+            } else
+                femaleEdit.checked = true;
+
+        }
+        imageEdit.src = (`http://localhost:5001/empImage/${editId}.png`);
+    } catch (error) {
+        console.log(error);
+    }
+
+    //     //save edit click
+    saveEdit.addEventListener('click', (e) => {
+        e.preventDefault();
+        const valid = vallidation();
+        if (!valid) {
+            return
+        }
+        else {
+            editEmpUpdate();
+        }
+    });
+    // update  employee   
+    async function editEmpUpdate() {
+
+        try {
+            const res = await fetch(`http://localhost:5001/employees/${editId}`, {
+                method: "PUT",
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify(formdata())
+            })
+            if (!res.ok) {
+                throw new Error(`edit is not updated${res.status}`)
+            }
+            const data = await res.json();
+            const avatarEdit = edit_input_file.files[0];
+            const editFormaData = new FormData();
+            editFormaData.append("avatar", avatarEdit);
+            if (imgCheck == true) {
+                await fetch(`http://localhost:5001/employees/${editId}/avatar`, {
+                    method: "POST",
+                    body: editFormaData,
+                });
+
+            }
+
+            const result = await Swal.fire({
+                icon: "success",
+                title: "Employee Edited Successfully!",
+                confirmButtonText: 'Ok'
+            })
+            if (result.isConfirmed) {
+                Swal.close();
+            }
+            location.reload();
+            addEmpCloseForm();
+        }
+        catch (error) {
+            console.log(`edit form error`, error);
+
+        }
+    }
+}

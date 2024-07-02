@@ -10,6 +10,7 @@ let currentUser;
 const userSignup=async (req,res)=>{
     
     let {username,email,password} = req.body;
+    console.log(req.body);
     currentUser = {
       username : username,
       email : email,
@@ -42,17 +43,17 @@ const userSignup=async (req,res)=>{
  const userLogin=async(req,res)=>{
     let {email,password} = req.body;
 
-    const response = await users.findOne({Email:email});
+    const response = await users.findOne({email:email});
     
     if(response){
-     if(!bcrypt.compareSync(password,response.Password)){
+     if(!bcrypt.compareSync(password,response.password)){
         let err = "invalid password";
          res.render("login",{err:err});
     
     }else{
       let user = {email:email}
     const token = jwt.sign(user,process.env.SECRET_KEY)
-    res.cookie("jwt", token, { httpOnly: true, maxAge: 15 * 60 * 1000 }); 
+    res.cookie("jwt", token, { httpOnly: true, maxAge: 30 * 60 * 1000 }); 
     return res.redirect("/employees/dashboard");
     // res.cookie("jwt",token).redirect("/employees/dashboard");
 
@@ -72,13 +73,14 @@ const userLogout = (req, res) => {
 
 const otpVerification = async (req,res) => {
   const {currentOtp} = req.body;
+  console.log(currentUser);
   // console.log(currentOtp+'    '+otp);
   // console.log(currentUser);
   if(currentOtp == otp){
     let userModel = users({
       userName:currentUser.username,
-      Email:currentUser.email,  
-      Password:currentUser.password
+      email:currentUser.email,  
+      password:currentUser.password
   });
   
   userModel.save().then((response)=>{

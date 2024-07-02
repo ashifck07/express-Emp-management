@@ -1,18 +1,32 @@
-<form id="employeeAddForm" method="post" action="">
+<form id="employeeAddForm">
     <div  class=" container-form-add col-12 add-form  bg-white  mt-4 mb-3 p-4 " id="addEmploye">
-      <div class="d-flex justify-content-between">
-        <span class="h3 fw-bold heading">Add Employee</span>
-        <button class="header_button"><i class="fa-solid fa-xmark" onclick="" id="closeBtn"></i></button>
+      <div class="d-flex justify-content-between" id="addHeader">
+        <span class="h3 fw-bold heading" id="ChangeName">Add Employee</span>
+        <button class="header_button"><i class="fa-solid fa-xmark" onclick="addEmpCloseForm()" id="closeBtn"></i></button>
       </div>
-      <div class="col-12 upload-content my-3" id="uploadImage">
+      <div class="d-flex justify-content-between" id="editHeader">
+        <span class="h3 fw-bold heading">Edit Employee</span>
+        <button class="header-button" onclick="addEmpCloseForm()" type="button" id="closeEdit"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    <div class="col-12 upload-content my-3" id="uploadImage">
           <input type="file" accept="image/JPG, image/PNG image/jpeg" id="input_file" name="avatar">
-         <label  class=" d-flex flex-column text-center   rounded py-3 gap-1" for="input_file">
+        <label  class=" d-flex flex-column text-center   rounded py-3 gap-1" for="input_file">
           <i class="fa-solid fa-upload fs-4"></i>
           <span class="image fs-6 fw-bold">Upload Image</span>
           <img src="/images/demo.png" alt="" id="avatarImg">
           <span class="text-secondary file-type">PNG, JPG files are allowed</span>
         </label>
-      </div>
+    </div>
+      
+    <input type="file" accept="image/JPG, image/PNG image/jpeg" id="edit_input_file" name="avatar">
+    <div class="edit-content" id="imgEdit">
+      <img src="/images/demo.png" alt="" id="imageEdit">
+   
+    <label  class="" for="edit_input_file">
+      Change
+    </label>
+  </div>
+   
       <div class="left-form-sec d-flex flex-column gap-3">
           <div class="row">
               <div class="col-3 d-flex flex-column">
@@ -137,11 +151,19 @@
                   <div class="error" id="pinzipError"></div>
               </div>
           </div>
-          <div class="row">
+          <div class="row" id="footer_add">
             <div class="bottom-button bg-white  p-4">
                 <div class="button d-flex justify-content-end">
-                    <button class="btn unfilled" onclick="" id="cancelBtn">Cancel</button>
+                    <button class="btn unfilled" onclick="addEmpCloseForm()" id="cancelBtn">Cancel</button>
                     <button class=" btn filled_btn" onclick="" id="empAddBtn" type="submit">Add Employee</button>
+                </div>
+            </div>
+        </div>
+        <div class="row footer_edit" id="footer_edit">
+            <div class="bottom-button bg-white  p-4">
+                <div class="button d-flex justify-content-end">
+                    <button class="btn unfilled" onclick="addEmpCloseForm()" type="button" id="">Cancel</button>
+                    <button class=" btn filled_btn" type="button" id="saveEdit">Save Changes</button>
                 </div>
             </div>
         </div>
